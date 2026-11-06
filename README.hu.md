@@ -4,7 +4,7 @@
 
 A Voyager–1 és a Voyager–2 pályájának interaktív szimulációja — az 1977-es indítástól egymilliárd évvel későbbig, a bolygóktól a Tejútrendszerig.
 
-Verzió: 1.0.1 · Utolsó frissítés: 2026-11-06
+Verzió: 1.1.0 · Utolsó frissítés: 2026-11-06
 
 ## Mit tud
 
@@ -12,6 +12,7 @@ Verzió: 1.0.1 · Utolsó frissítés: 2026-11-06
 - Nagyítás 1 CSE-től több tízezer fényévig, fényóra, fénynap (≈173 CSE) és fényév referenciakörökkel.
 - Ballisztikus ívek (Lambert-probléma) a valós elhaladási dátumok között, majd extrapoláció a Nap gravitációjával és a helyi galaktikus dinamikával (epiciklikus / Hill-egyenletek).
 - Helioszféra, Oort-felhő és 19 közeli csillag sajátmozgással, valamint a legközelebbi megközelítések táblázata.
+- Felület 8 nyelven (EN, RO, FR, IT, ES, PT, DE, HU): a Beállításokban választható, vagy az oldal `?lang=xx` címmel való megnyitásával. A választás megmarad; alapértelmezés a böngésző nyelve.
 - Egyetlen, offline HTML-fájl; a felület alkalmazkodik telefonhoz, táblagéphez és asztali géphez.
 
 ## Használat
@@ -28,7 +29,7 @@ Nyisd meg az `index.html` fájlt egy modern böngészőben — telepítés és h
 
 ## Tesztek
 
-A `node tests/model.test.js` ellenőrzi a modellt (bolygók, elhaladások, 2026-os pozíciók, heliopauza-távolságok, sebességek, véges értékek, csillag-megközelítések).
+A `node tests/model.test.js` ellenőrzi a modellt (bolygók, elhaladások, 2026-os pozíciók, heliopauza-távolságok, sebességek, véges értékek, csillag-megközelítések). Translations live in `i18n/*.json` (`python3 tools/build-i18n.py` embeds them, `python3 tools/check-i18n.py` validates them, `node tests/i18n-e2e.js index.html` checks all languages and screen sizes).
 
 ## Licenc és köszönet
 

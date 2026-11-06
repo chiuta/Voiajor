@@ -4,7 +4,7 @@
 
 Interactive simulation of the Voyager 1 and 2 trajectories — from launch in 1977 to a billion years from now, from the planets out to the Milky Way.
 
-Version: 1.0.1 · Last update: 2026-11-06
+Version: 1.1.0 · Last update: 2026-11-06
 
 ## What it does
 
@@ -12,6 +12,7 @@ Version: 1.0.1 · Last update: 2026-11-06
 - Zoom from 1 AU to tens of thousands of light-years, with reference rings for the light-hour, the light-day (≈173 AU) and the light-year.
 - Ballistic arcs (Lambert problem) between the real flyby dates, then extrapolation with solar gravity and local galactic dynamics (epicyclic / Hill equations).
 - Heliosphere, Oort cloud and 19 nearby stars with proper motion, plus a table of the closest approaches.
+- Interface in 8 languages (EN, RO, FR, IT, ES, PT, DE, HU): pick it in Options, or open the page with `?lang=xx`. The choice is remembered; the default follows the browser language.
 - One offline HTML file; layout adapts to phones, tablets and desktops.
 
 ## Use
@@ -28,7 +29,7 @@ Open `index.html` in any modern browser — no installation, no network. Online:
 
 ## Tests
 
-`node tests/model.test.js` checks the model (planets, flybys, 2026 positions, heliopause distances, speeds, finite values, star approaches).
+`node tests/model.test.js` checks the model (planets, flybys, 2026 positions, heliopause distances, speeds, finite values, star approaches). Translations live in `i18n/*.json` (`python3 tools/build-i18n.py` embeds them, `python3 tools/check-i18n.py` validates them, `node tests/i18n-e2e.js index.html` checks all languages and screen sizes).
 
 ## License and credits
 

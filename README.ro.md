@@ -4,7 +4,7 @@
 
 Simulare interactivă a traseelor Voyager 1 și 2 — de la lansarea din 1977 până peste un miliard de ani, de la planete până în Calea Lactee.
 
-Versiune: 1.0.1 · Ultima actualizare: 2026-11-06
+Versiune: 1.1.0 · Ultima actualizare: 2026-11-06
 
 ## Ce face
 
@@ -12,6 +12,7 @@ Versiune: 1.0.1 · Ultima actualizare: 2026-11-06
 - Zoom de la 1 UA la zeci de mii de ani-lumină, cu cercuri de referință pentru ora-lumină, ziua-lumină (≈173 UA) și anul-lumină.
 - Arce balistice (problema Lambert) între datele reale ale zborurilor, apoi extrapolare cu gravitația Soarelui și dinamica galactică locală (ecuațiile epiciclice / Hill).
 - Heliosferă, Norul Oort și 19 stele apropiate cu mișcare proprie, plus un tabel al celor mai mici apropieri.
+- Interfață în 8 limbi (EN, RO, FR, IT, ES, PT, DE, HU): se alege din Opțiuni sau deschizând pagina cu `?lang=xx`. Alegerea se reține; implicit se folosește limba browserului.
 - Un singur fișier HTML, offline; interfața se adaptează la telefon, tabletă și desktop.
 
 ## Utilizare
@@ -28,7 +29,7 @@ Deschide `index.html` în orice browser modern — fără instalare, fără reț
 
 ## Teste
 
-`node tests/model.test.js` verifică modelul (planete, zboruri, poziții 2026, distanțe la heliopauză, viteze, valori finite, apropieri de stele).
+`node tests/model.test.js` verifică modelul (planete, zboruri, poziții 2026, distanțe la heliopauză, viteze, valori finite, apropieri de stele). Translations live in `i18n/*.json` (`python3 tools/build-i18n.py` embeds them, `python3 tools/check-i18n.py` validates them, `node tests/i18n-e2e.js index.html` checks all languages and screen sizes).
 
 ## Licență și credite
 

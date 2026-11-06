@@ -4,7 +4,7 @@
 
 Interaktive Simulation der Bahnen von Voyager 1 und 2 — vom Start 1977 bis in eine Milliarde Jahre Zukunft, von den Planeten bis zur Milchstraße.
 
-Version: 1.0.1 · Letzte Aktualisierung: 2026-11-06
+Version: 1.1.0 · Letzte Aktualisierung: 2026-11-06
 
 ## Was die App macht
 
@@ -12,6 +12,7 @@ Version: 1.0.1 · Letzte Aktualisierung: 2026-11-06
 - Zoom von 1 AE bis zu Zehntausenden Lichtjahren, mit Referenzkreisen für Lichtstunde, Lichttag (≈173 AE) und Lichtjahr.
 - Ballistische Bögen (Lambert-Problem) zwischen den realen Vorbeiflugdaten, danach Extrapolation mit der Sonnengravitation und der lokalen galaktischen Dynamik (epizyklische / Hill-Gleichungen).
 - Heliosphäre, Oortsche Wolke und 19 nahe Sterne mit Eigenbewegung sowie eine Tabelle der größten Annäherungen.
+- Oberfläche in 8 Sprachen (EN, RO, FR, IT, ES, PT, DE, HU): Auswahl unter Optionen oder durch Öffnen der Seite mit `?lang=xx`. Die Wahl wird gespeichert; standardmäßig gilt die Browsersprache.
 - Eine einzige HTML-Datei, offline nutzbar; die Oberfläche passt sich Smartphones, Tablets und Desktops an.
 
 ## Nutzung
@@ -28,7 +29,7 @@ Version: 1.0.1 · Letzte Aktualisierung: 2026-11-06
 
 ## Tests
 
-`node tests/model.test.js` prüft das Modell (Planeten, Vorbeiflüge, Positionen 2026, Heliopausen-Abstände, Geschwindigkeiten, endliche Werte, Sternannäherungen).
+`node tests/model.test.js` prüft das Modell (Planeten, Vorbeiflüge, Positionen 2026, Heliopausen-Abstände, Geschwindigkeiten, endliche Werte, Sternannäherungen). Translations live in `i18n/*.json` (`python3 tools/build-i18n.py` embeds them, `python3 tools/check-i18n.py` validates them, `node tests/i18n-e2e.js index.html` checks all languages and screen sizes).
 
 ## Lizenz und Nachweise
 

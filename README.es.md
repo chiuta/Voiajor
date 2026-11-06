@@ -4,7 +4,7 @@
 
 Simulación interactiva de las trayectorias de Voyager 1 y 2 — desde el lanzamiento en 1977 hasta dentro de mil millones de años, de los planetas a la Vía Láctea.
 
-Versión: 1.0.1 · Última actualización: 2026-11-06
+Versión: 1.1.0 · Última actualización: 2026-11-06
 
 ## Qué hace
 
@@ -12,6 +12,7 @@ Versión: 1.0.1 · Última actualización: 2026-11-06
 - Zoom desde 1 UA hasta decenas de miles de años luz, con círculos de referencia para la hora luz, el día luz (≈173 UA) y el año luz.
 - Arcos balísticos (problema de Lambert) entre las fechas reales de los sobrevuelos y después extrapolación con la gravedad del Sol y la dinámica galáctica local (ecuaciones epicíclicas / de Hill).
 - Heliosfera, nube de Oort y 19 estrellas cercanas con movimiento propio, más una tabla de las aproximaciones más cercanas.
+- Interfaz en 8 idiomas (EN, RO, FR, IT, ES, PT, DE, HU): se elige en Opciones o abriendo la página con `?lang=xx`. La elección se recuerda; por defecto se usa el idioma del navegador.
 - Un solo archivo HTML sin conexión; la interfaz se adapta a teléfonos, tabletas y ordenadores.
 
 ## Uso
@@ -28,7 +29,7 @@ Abre `index.html` en un navegador moderno — sin instalación ni red. En línea
 
 ## Pruebas
 
-`node tests/model.test.js` verifica el modelo (planetas, sobrevuelos, posiciones de 2026, distancias a la heliopausa, velocidades, valores finitos, aproximaciones a estrellas).
+`node tests/model.test.js` verifica el modelo (planetas, sobrevuelos, posiciones de 2026, distancias a la heliopausa, velocidades, valores finitos, aproximaciones a estrellas). Translations live in `i18n/*.json` (`python3 tools/build-i18n.py` embeds them, `python3 tools/check-i18n.py` validates them, `node tests/i18n-e2e.js index.html` checks all languages and screen sizes).
 
 ## Licencia y créditos
 
