@@ -4,7 +4,7 @@
 
 A Voyager–1 és a Voyager–2 pályájának interaktív szimulációja — az 1977-es indítástól egymilliárd évvel későbbig, a bolygóktól a Tejútrendszerig.
 
-Verzió: 1.0.0 · Utolsó frissítés: 2026-11-06
+Verzió: 1.0.1 · Utolsó frissítés: 2026-11-06
 
 ## Mit tud
 

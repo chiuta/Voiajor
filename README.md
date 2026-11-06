@@ -4,7 +4,7 @@
 
 Interactive simulation of the Voyager 1 and 2 trajectories — from launch in 1977 to a billion years from now, from the planets out to the Milky Way.
 
-Version: 1.0.0 · Last update: 2026-11-06
+Version: 1.0.1 · Last update: 2026-11-06
 
 ## What it does
 

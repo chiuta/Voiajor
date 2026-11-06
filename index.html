@@ -125,6 +125,9 @@ body.compact #opt{left:max(10px,env(safe-area-inset-left));min-width:0;padding:8
 body.compact .ggrid{grid-template-columns:1fr 1.6fr}
 body.compact .ggrid2{grid-template-columns:1fr 1fr}
 body.compact .ggrid2 select:last-child{grid-column:1/3}
+body.compact #bPlay,body.compact #bStart,body.compact #bMore,body.compact #bGo{min-width:40px}
+dl{grid-template-columns:minmax(0,max-content) minmax(0,1fr)}
+@media (pointer:coarse){#gChips button{min-height:34px}body.compact .row button,body.compact .row select,body.compact #top button{min-height:40px}}
 </style>
 </head>
 <body>
@@ -159,7 +162,7 @@ body.compact .ggrid2 select:last-child{grid-column:1/3}
     <div id="evList"></div>
   </div>
   <div class="pane" id="p-stars">
-    <h4>Cele mai mari apropieri de stele (model, din 2026 încolo)</h4>
+    <h4>Cele mai mici distanțe de apropiere de stele (model, din 2026 încolo)</h4>
     <div id="appr"><span class="small">Se calculează…</span></div>
     <h4>Stele cele mai apropiate de Soare la momentul simulat</h4>
     <div id="nearNow"></div>
@@ -413,21 +416,23 @@ const clampT=t=>Math.min(TMAX,Math.max(TMIN,t));
 // ---------- formatare ----------
 const RO=['ian.','feb.','mar.','apr.','mai','iun.','iul.','aug.','sep.','oct.','nov.','dec.'];
 function nf(x,d){d=d||0;try{return x.toLocaleString('ro-RO',{minimumFractionDigits:d,maximumFractionDigits:d});}catch(e){return x.toFixed(d);}}
-function fmtBig(n){const a=Math.abs(n);if(a>=1e9)return nf(n/1e9,a<1e10?2:1)+' mld.';if(a>=1e6)return nf(n/1e6,a<1e7?2:1)+' mil.';if(a>=1e4)return nf(n/1e3,0)+' mii';return nf(n,0);}
+function ro(n,sg,pl){const k=Math.abs(Math.round(n)),m=k%100;if(k===0)return pl;return (m===0||m>=20)?'de '+pl:(k===1?sg:pl);}
+function fmtBig(n){const a=Math.abs(n);if(a>=1e9||Math.round(a/1e6)>=1000)return nf(n/1e9,a<1e10?2:1)+' mld.';if(a>=1e6||Math.round(a/1e3)>=1000)return nf(n/1e6,a<1e7?2:1)+' mil.';if(a>=1e4)return nf(n/1e3,0)+' mii';return nf(n,0);}
 function fmtDate(tau){
   if(tau<=1000){const c=M.calFromJD(2451545+tau*365.25);return Math.floor(c.d)+' '+RO[c.m-1]+' '+c.y;}
   const yr=2000+tau;
   if(tau<=2e5)return 'anul '+nf(Math.round(yr),0);
   return 'peste '+fmtBig(tau)+' ani';}
+function fmtDateTime(tau){if(tau>1000)return fmtDate(tau);const c=M.calFromJD(2451545+tau*365.25),H=Math.floor(c.h),Mi=Math.floor((c.h-H)*60),p=n=>(n<10?'0':'')+n;return Math.floor(c.d)+' '+RO[c.m-1]+' '+c.y+', '+p(H)+':'+p(Mi)+' UTC';}
 function relNow(tau){const dn=tau-nowTau(),a=Math.abs(dn),d=a*365.25;if(d<0.5)return 'astăzi';
-  const s=d<1.5?'o zi':d<400?nf(d,0)+' zile':a<2e5?nf(a,a<10?1:0)+' ani':fmtBig(a)+' ani';return dn<0?'acum '+s:'peste '+s;}
+  const s=d<1.5?'o zi':d<400?nf(d,0)+' '+ro(d,'zi','zile'):a<2e5?(a<10?nf(a,1)+' ani':nf(a,0)+' '+ro(a,'an','ani')):fmtBig(a)+' ani';return dn<0?'acum '+s:'peste '+s;}
 function fmtDateSub(tau){const L=tau-V2.launch,base=relNow(tau),far=tau-TAU0>1e8?' · aproximativ (model liniar)':'';
   if(compact)return base+(L>0&&tau<=nowTau()+1?' · '+nf(L,1)+' ani de la lansare':far);
   return base+(L>0?' · '+fmtYears(L)+' de la lansări':' · înainte de lansări')+far;}
 function fmtLT(AU){const s=AU*499.0048;if(s<90)return nf(s,0)+' s';if(s<5400)return nf(s/60,1)+' min';if(s<172800)return nf(s/3600,1)+' ore';const d=s/86400;if(d<700)return nf(d,1)+' zile';return nf(d/365.25,2)+' ani';}
 function fmtDist(AU){const a=Math.abs(AU);if(a<0.1)return nf(AU*AU_KM,0)+' km';if(a<2e4)return nf(AU,a<10?2:1)+' UA';
   const ly=AU/LY_AU;if(ly<3e3)return nf(ly,ly<10?2:ly<100?1:0)+' a.l.';return nf(ly/3261.56,ly/3261.56<10?2:1)+' kpc';}
-function fmtYears(n){return n<2e5?nf(n,0)+' ani':fmtBig(n)+' ani';}
+function fmtYears(n){return n<2e5?nf(n,0)+' '+ro(n,'an','ani'):fmtBig(n)+' ani';}
 function fmtHM(h){const H=Math.floor(h),m=Math.round((h-H)*60);return H+'h '+(m<10?'0':'')+m+'m';}
 
 // ---------- starea ----------
@@ -478,7 +483,7 @@ function ev(v,t,lab,title,txt,kind){EV.push({v,t,lab,title,txt,kind:kind||'',pos
  ev(2,T(1989,8,25,3.9),'Neptun','Neptun','≈4 950 km deasupra norilor; apoi Triton. Traiectoria coboară spre sud.');
  ev(2,V2.ts,'Șoc terminal','Șocul terminal','≈84 UA.');
  ev(2,V2.hp,'Heliopauză','Heliopauza','≈119 UA: a doua sondă în spațiul interstelar, cu instrumentul plasmatic funcțional.');
- const e1=M.findEarth(V1,M.LD_AU);if(e1)ev(1,e1,'1 zi-lumină','1 zi-lumină de Pământ','Semnalul radio are nevoie de 24 de ore într-un sens. (Calcul din model; NASA anunță nov. 2026.)','key');
+ const e1=M.findEarth(V1,M.LD_AU);if(e1)ev(1,e1,'1 zi-lumină','1 zi-lumină de Pământ','Semnalul radio are nevoie de 24 de ore într-un sens. (Dată calculată de model; NASA a indicat noiembrie 2026 pentru acest reper.)','key');
  VOY.forEach(V=>{const t=M.findR(V,LD_AU);if(t)ev(V.id,t,'1 zi-lumină','1 zi-lumină de Soare','≈173 UA față de Soare (heliocentric).','key');});
  ev(0,T(2033,1,1),'≈ anii 2030','Estimare: tăcerea radio','Generatorii cu plutoniu scad cu ≈4 W/an; instrumentele se sting pe rând, iar sondele rămân fără transmisie. Datare orientativă.','est');
  [[1,1000,'Norul Oort','Intrare în Norul Oort interior','≈1 000 UA (peste ≈250 de ani).'],[1,2e4,'Oort exterior','Norul Oort exterior','≈20 000 UA.'],[1,M.LY_AU,'1 an-lumină','1 an-lumină de Soare','63 241 UA.'],[1,1e5,'Marginea Oort','Ieșirea din Norul Oort','≈100 000 UA; traversarea durează ≈30 000 de ani.']].forEach(a=>{const t=M.findR(V1,a[1]);if(t)ev(a[0],t,a[2],a[3],a[4]);});
@@ -492,11 +497,11 @@ evPos();
 // ---------- proiecție ----------
 let AW=0,AH=0,CX=0,CY=0,K=1,F=[0,0,0],cyw=1,syw=0,cpt=1,spt=0,DPR=1,topH=48,ctlH=170,sideW=0;
 let compact=false,sheet=false,FS=1,lastKey='',minUser=null;
-function modeClasses(){const w=innerWidth,h=innerHeight;compact=Math.min(w,h)<=520;sheet=w<=820&&h>w*0.9;FS=compact?0.86:1;topH=compact?40:48;
+function modeClasses(){const w=innerWidth,h=innerHeight;compact=Math.min(w,h)<=520;sheet=w<=820&&h>w*0.9;FS=compact?0.9:1;topH=compact?40:48;
   const c=document.body.classList;c.toggle('compact',compact);c.toggle('sheet',sheet);
   const wantMin=minUser!==null?minUser:(compact&&h<=640);$('ctl').classList.toggle('min',wantMin);$('bMore').textContent=wantMin?'▴':'▾';}
 function measure(){ctlH=$('ctl').offsetHeight;}
-function resize(){DPR=Math.min(2,window.devicePixelRatio||1);const w=innerWidth,h=innerHeight;cv.width=Math.round(w*DPR);cv.height=Math.round(h*DPR);ctx.setTransform(DPR,0,0,DPR,0,0);
+function resize(){const w=innerWidth,h=innerHeight;DPR=Math.max(1,Math.min(2,window.devicePixelRatio||1,Math.sqrt(4.2e6/(w*h))));cv.width=Math.round(w*DPR);cv.height=Math.round(h*DPR);ctx.setTransform(DPR,0,0,DPR,0,0);
   modeClasses();document.documentElement.style.setProperty('--toph',topH+'px');measure();lastKey='';layout();}
 function layout(){const w=innerWidth,h=innerHeight;let sw=0,sh=0;
   if(S.side){if(sheet)sh=Math.round((h-topH-ctlH)*(compact?0.42:0.46));else sw=compact?Math.min(360,Math.max(280,Math.round(w*0.38))):Math.min(360,Math.max(250,Math.round(w*0.3)));}
@@ -510,9 +515,10 @@ const inV=(q,m)=>q[0]>-m&&q[0]<innerWidth+m&&q[1]>-m&&q[1]<innerHeight+m;
 // ---------- desen ----------
 let P={v1:[0,0,0],v2:[0,0,0],planets:[]};
 let boxes=[];
-function label(txt,x,y,col,size,align){if(!S.opts.lab)return;const sz=(size||11)*FS;ctx.font=sz+'px system-ui,sans-serif';const w=ctx.measureText(txt).width,bx=align==='r'?x-w-4:x+4,by=y-sz;
+function label(txt,x,y,col,size,align){if(!S.opts.lab)return;const sz=Math.max(compact?9.5:10,(size||11)*FS);ctx.font=sz+'px system-ui,sans-serif';const w=ctx.measureText(txt).width;
+  let bx=align==='r'?x-w-4:x+4;const Wv=innerWidth;if(bx+w>Wv-4)bx=Wv-4-w;if(bx<4)bx=4;const by=y-sz;
   for(const b of boxes){if(bx<b[0]+b[2]+2&&bx+w+2>b[0]&&by<b[1]+b[3]&&by+sz>b[1])return;}
-  boxes.push([bx,by,w,sz]);ctx.fillStyle=col||'#cfe0ff';ctx.textAlign=align==='r'?'right':'left';ctx.fillText(txt,align==='r'?x-4:x+4,y);}
+  boxes.push([bx,by,w,sz]);ctx.fillStyle=col||'#cfe0ff';ctx.textAlign='left';ctx.fillText(txt,bx,y);}
 function ringPts(R,N,fn){const o=[];for(let i=0;i<=N;i++){const a=i/N*Math.PI*2;o.push(proj(fn?fn(a):[R*Math.cos(a),R*Math.sin(a),0]));}return o;}
 function clipSeg(x0,y0,x1,y1,xa,ya,xb,yb){let t0=0,t1=1;const dx=x1-x0,dy=y1-y0;
   const P=[-dx,dx,-dy,dy],Q=[x0-xa,xb-x0,y0-ya,yb-y0];
@@ -589,12 +595,12 @@ function draw(){
     if(!(compact&&(e.kind===''||e.kind==='est')&&W>120))label(e.lab,q[0]+2,q[1]+14,V.col,10,'l');});});
   if(P.showNow){[[V1,P.n1],[V2,P.n2]].forEach(a=>{const q=proj(a[1]);if(!inV(q,0))return;ctx.strokeStyle=a[0].col;ctx.lineWidth=1.2;ctx.setLineDash([2,2]);ctx.beginPath();ctx.arc(q[0],q[1],5,0,6.2832);ctx.stroke();ctx.setLineDash([]);label('azi',q[0]+7,q[1]+12,a[0].col,10,'l');});}
   // sonde
-  [[V1,P.v1],[V2,P.v2]].forEach(a=>{const V=a[0],q=proj(a[1]);if(S.tau<V.launch-0.01)return;glow(q,3.2,V.col);ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(q[0],q[1],3,0,6.2832);ctx.fill();
+  [[V1,P.v1],[V2,P.v2]].forEach(a=>{const V=a[0],q=proj(a[1]);if(S.tau<V.launch-0.01||!inV(q,60))return;glow(q,3.2,V.col);ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(q[0],q[1],3,0,6.2832);ctx.fill();
     ctx.strokeStyle=V.col;ctx.lineWidth=1.6;ctx.beginPath();ctx.arc(q[0],q[1],6,0,6.2832);ctx.stroke();
-    if(S.opts.lab){ctx.font='bold '+(12*FS)+'px system-ui,sans-serif';ctx.fillStyle=V.col;ctx.textAlign='left';ctx.fillText((compact?'V'+V.id:V.name)+' · '+fmtDist(M.norm(a[1])),q[0]+9,q[1]-7);}});
+    if(S.opts.lab){ctx.font='bold '+(12*FS)+'px system-ui,sans-serif';ctx.fillStyle=V.col;ctx.textAlign='left';{const t=(compact?'V'+V.id:V.name)+' · '+fmtDist(M.norm(a[1])),tw=ctx.measureText(t).width,tx=q[0]+9+tw>innerWidth-4?q[0]-9-tw:q[0]+9;ctx.fillText(t,Math.max(4,tx),q[1]-7);}}});
   // scară
   const target=compact?80:110,AUn=target/K;const pw=Math.pow(10,Math.floor(Math.log10(AUn)));let nice=pw;[1,2,5,10].forEach(m=>{if(m*pw<=AUn)nice=m*pw;});
-  $('bar').style.width=(nice*K)+'px';setT('scaleTxt',compact?fmtDist(nice)+(nice>=2?' · '+fmtLT(nice):''):fmtDist(nice)+(nice>=2?' · lumina: '+fmtLT(nice):'')+'   |   rază vizibilă ≈ '+fmtDist(W));
+  {const bw=Math.round(nice*K),be=$('bar');if(be._w!==bw){be._w=bw;be.style.width=bw+'px';}}setT('scaleTxt',compact?fmtDist(nice)+(nice>=2?' · '+fmtLT(nice):''):fmtDist(nice)+(nice>=2?' · lumina: '+fmtLT(nice):'')+'   |   rază vizibilă ≈ '+fmtDist(W));
 }
 function drawGalaxy(W){
   const t=(S.tau-TAU0)*1e-6,cor=!!S.opts.cor,R0=M.R0_PC,Rd=M.DISK_PC;
@@ -612,20 +618,21 @@ function drawGalaxy(W){
 // ---------- telemetrie ----------
 function raDec(p){const q=M.ecl2eq(p),r=M.norm(q);let ra=Math.atan2(q[1],q[0])/D2R/15;if(ra<0)ra+=24;return {ra,dec:Math.asin(q[2]/r)/D2R};}
 function region(V,r,tau){
-  if(tau<V.launch)return 'La sol, pe Pământ';const e=V.enc;if(tau<e[0].t)return 'Spre '+['Jupiter'][0];
+  if(tau<V.launch)return 'Pe Pământ, înainte de lansare';const e=V.enc;if(tau<e[0].t)return 'Spre '+['Jupiter'][0];
   const names=['Jupiter','Saturn','Uranus','Neptun'];for(let i=0;i<e.length-1;i++)if(tau<e[i+1].t)return 'Între '+names[i]+' și '+names[i+1];
-  if(tau<V.ts)return r<50?'Dincolo de Neptun, în centura Kuiper':'Heliosfera externă';if(tau<V.hp)return 'Heliogaina (între șoc și heliopauză)';
+  if(tau<V.ts)return r<30?'Dincolo de Saturn, spre marginea sistemului planetar':r<50?'Dincolo de Neptun, în centura Kuiper':'Heliosfera externă';if(tau<V.hp)return 'Heliogaina (între șoc și heliopauză)';
   if(r<1000)return 'Spațiu interstelar, imediat după heliopauză';if(r<2e4)return 'Norul Oort interior';if(r<1e5)return 'Norul Oort exterior';
   if(r<3e6)return 'Spațiu interstelar, în vecinătatea Soarelui';if(r<2e7)return 'Vecinătatea stelară (Bula Locală)';if(r<2e8)return 'Brațul Orion al Căii Lactee';
   if(r<3e9)return 'Discul Căii Lactee';return 'Scară galactică';}
-function status(tau){if(tau<TAU0)return 'în misiune';if(tau<M.T(2033,1,1))return 'în misiune (instrumente reduse, estimare)';return 'tăcută — doar călătorește (estimare)';}
+function status(V,tau){if(tau<V.launch)return 'înainte de lansare';if(tau<TAU0)return 'în misiune';if(tau<M.T(2033,1,1))return 'în misiune (instrumente reduse, estimare)';return 'tăcută — doar călătorește (estimare)';}
 const dl=(k,v)=>'<dt>'+k+'</dt><dd>'+v+'</dd>';
 function updTel(){
+  if(!S.side)return;
   [[V1,P.v1,'d1'],[V2,P.v2,'d2']].forEach(a=>{const V=a[0],p=a[1],r=M.norm(p),sp=S.tau<V.launch?0:M.voySpeed(V,S.tau),rd=raDec(p),earth=M.norm(M.sub(p,M.planetPos(2,S.tau)));
     let near='',nd=1e30;STARS.forEach(s=>{const d=M.norm(M.sub(p,M.starPos(s,S.tau,!!S.opts.cor)));if(d<nd){nd=d;near=s.name;}});
-    $(a[2]).innerHTML=dl('Stare',status(S.tau))+dl('Regiune',region(V,r,S.tau))+dl('Distanță de Soare',fmtDist(r)+(r>1e4?'':' = '+nf(r*AU_KM/1e9,2)+' mld. km'))+
-      dl('Distanță de Pământ',fmtDist(earth))+dl('Semnal radio (dus)',fmtLT(earth))+dl('Viteză față de Soare',nf(sp,2)+' km/s')+
-      dl('Direcție (AD / Dec)',fmtHM(rd.ra)+' / '+nf(rd.dec,1)+'°')+dl('Vârstă de la lansare',S.tau<V.launch?'—':fmtYears(S.tau-V.launch))+dl('Cea mai apropiată stea din catalog',near+' · '+fmtDist(nd));});
+    $(a[2]).innerHTML=dl('Stare',status(V,S.tau))+dl('Regiune',region(V,r,S.tau))+dl('Dist. de Soare',fmtDist(r)+(r>1e4?'':' = '+nf(r*AU_KM/1e9,2)+' mld. km'))+
+      dl('Dist. de Pământ',S.tau<V.launch?'—':fmtDist(earth))+dl('Semnal radio (dus)',S.tau<V.launch?'—':fmtLT(earth))+dl('Viteză față de Soare',S.tau<V.launch?'—':nf(sp,2)+' km/s')+
+      dl('Direcție (AD / Dec)',fmtHM(rd.ra)+' / '+nf(rd.dec,1)+'°')+dl('De la lansare',S.tau<V.launch?'—':fmtYears(S.tau-V.launch))+dl('Stea apropiată',near+' · '+fmtDist(nd));});
   const near=STARS.map(s=>({n:s.name,d:M.norm(M.starPos(s,S.tau,!!S.opts.cor))})).sort((a,b)=>a.d-b.d).slice(0,8);
   $('nearNow').innerHTML='<table>'+near.map(x=>'<tr><td>'+x.n+'</td><td class="r">'+fmtDist(x.d)+'</td></tr>').join('')+'</table>';}
 
@@ -635,11 +642,11 @@ function renderEv(){const L=$('evList');L.innerHTML='';EV.filter(e=>evF===0||e.v
   const cols=e.v===0?'linear-gradient(90deg,var(--v1),var(--v2))':(e.v===1?'var(--v1)':'var(--v2)');
   let txt=e.txt;if(txt==='__dyn__'){const r1=M.norm(e.pp[0]),r2=M.norm(e.pp[1]);txt='V1 la '+fmtDist(r1)+' de Soare; V2 la '+fmtDist(r2)+' (model liniar + dinamică galactică locală).';}
   d.innerHTML='<div class="d"><span class="dot" style="background:'+cols+'"></span>'+(e.v?VOY[e.v-1].name:'Ambele sonde')+' · '+fmtDate(e.t)+' · '+relNow(e.t)+'</div><div class="t">'+e.title+'</div><div class="x">'+txt+'</div>';
-  d.onclick=()=>{S.tau=e.t;setPlay(false);syncUI();if(sheet){S.side=false;applySide();}};L.appendChild(d);});}
+  d.onclick=()=>{S.tau=e.t;setPlay(false);leaveLive();clearHash();syncUI();if(sheet){S.side=false;applySide();}};L.appendChild(d);});}
 
 // ---------- apropieri de stele ----------
-function computeApproaches(){
-  const out=[];VOY.forEach(V=>{const arr=STARS.map(s=>{const c=M.closest(V,s,2.5e6);return {s,t:c.t,d:c.d};}).sort((a,b)=>a.d-b.d).slice(0,5);out.push(arr);});
+async function computeApproaches(){
+  const out=[];for(const V of VOY){const rows=[];for(const s of STARS){const c=M.closest(V,s,2.5e6);rows.push({s,t:c.t,d:c.d});await new Promise(r=>setTimeout(r,0));}rows.sort((a,b)=>a.d-b.d);out.push(rows.slice(0,5));}
   let html='';
   out.forEach((arr,i)=>{html+='<div class="card"><h3 style="color:'+VOY[i].col+'">'+VOY[i].name+'</h3><table><tr><th>Stea</th><th>Când</th><th class="r">Distanță</th></tr>'+
     arr.map((x,j)=>'<tr><td><a href="#" data-t="'+x.t+'" style="color:#cfe0ff">'+x.s.name+'</a></td><td>'+fmtDate(x.t)+'</td><td class="r">'+nf(x.d/LY_AU,2)+' a.l.</td></tr>').join('')+'</table></div>';
@@ -647,7 +654,7 @@ function computeApproaches(){
   const LIT=[[V1,'Gliese 445',1.6,40000],[V2,'Ross 248',1.7,42000],[V2,'Sirius',4.3,296000]];
   html+='<h4>Literatură față de model</h4><table><tr><th>Sondă · stea</th><th class="r">Literatură</th><th class="r">Model</th></tr>'+LIT.map(x=>{const s=STARS.find(q=>q.name===x[1]),c=M.closest(x[0],s,1.2e6);
     return '<tr><td>'+x[0].name.replace('Voyager ','V')+' · '+x[1]+'</td><td class="r">≈'+nf(x[2],1)+' a.l. · ~'+nf(x[3],0)+' ani</td><td class="r">'+nf(c.d/LY_AU,1)+' a.l. · +'+nf(Math.round((c.t-TAU0)/100)*100,0)+' ani</td></tr>';}).join('')+'</table><div class="small">Literatura: NASA/JPL, prin Wikipedia. Pe distanțe de ani-lumină, o abatere de câteva grade în direcția vitezei unei sonde schimbă distanța minimă cu zecimi de an-lumină sau mai mult (la Sirius, peste doi ani-lumină), așa că valorile modelului sunt orientative.</div>';
-  $('appr').innerHTML=html;$('appr').querySelectorAll('a').forEach(a=>a.onclick=ev=>{ev.preventDefault();S.tau=parseFloat(a.dataset.t);setPlay(false);syncUI();});
+  $('appr').innerHTML=html;$('appr').querySelectorAll('a').forEach(a=>a.onclick=ev=>{ev.preventDefault();S.tau=parseFloat(a.dataset.t);setPlay(false);leaveLive();clearHash();syncUI();});
   EV.sort((a,b)=>a.t-b.t);evPos();renderEv();}
 
 // ---------- „Despre” ----------
@@ -659,14 +666,15 @@ $('p-about').innerHTML='<h4>Ce arată aplicația</h4><p>Traseul celor două sond
  '<p class="small">Sursa datelor misiunii: NASA/JPL. Aplicație cu un singur fișier, funcționează fără internet.</p>';
 
 // ---------- UI ----------
-function applySide(){$('side').classList.toggle('hide',!S.side);$('bSide').classList.toggle('on',S.side);layout();}
+function applySide(){$('side').classList.toggle('hide',!S.side);$('bSide').classList.toggle('on',S.side);layout();if(S.side)updTel();}
+function leaveLive(){if(S.mode==='live'){S.mode='rate';S.rate=1;selRate.value=5;}}
 function syncUI(){$('tSl').value=pOfTau(S.tau);$('zSl').value=S.logW;}
 function setPlay(b){S.play=b;$('bPlay').innerHTML=(b?'⏸':'▶')+'<span class="lbl"> '+(b?'Pauză':'Redare')+'</span>';$('bPlay').classList.toggle('on',b);}
-$('bPlay').onclick=()=>{if(!S.play&&S.tau>=TMAX-1)S.tau=TMIN;setPlay(!S.play);};
-$('bStart').onclick=()=>{S.tau=TMIN;setPlay(false);syncUI();};
+$('bPlay').onclick=()=>{if(!S.play&&S.tau>=TMAX-1)S.tau=TMIN;clearHash();setPlay(!S.play);};
+$('bStart').onclick=()=>{S.tau=TMIN;setPlay(false);leaveLive();clearHash();syncUI();};
 $('bNow').onclick=()=>{selRate.value=0;S.mode='live';S.tau=clampT(nowTau());setPlay(true);syncUI();clearHash();};
-selRate.onchange=()=>{const r=RATES[selRate.value];S.mode=(r[1]==='cine'||r[1]==='live')?r[1]:'rate';S.rate=r[2];if(S.mode==='live')setPlay(true);};
-$('tSl').oninput=e=>{clearHash();if(S.play&&S.mode==='live')setPlay(false);S.tau=tauOfP(parseFloat(e.target.value));};
+selRate.onchange=()=>{clearHash();const r=RATES[selRate.value];S.mode=(r[1]==='cine'||r[1]==='live')?r[1]:'rate';S.rate=r[2];if(S.mode==='live')setPlay(true);};
+$('tSl').oninput=e=>{clearHash();{const wasLive=S.mode==='live';leaveLive();if(wasLive)setPlay(false);}S.tau=tauOfP(parseFloat(e.target.value));};
 $('zSl').oninput=e=>{S.logW=parseFloat(e.target.value);setAuto(false);};
 selZ.onchange=()=>{if(selZ.value===''){return;}const z=ZP[selZ.value];S.logW=Math.log10(z[1]);setAuto(false);selZ.value='';syncUI();};
 function setAuto(b){S.opts.auto=b?1:0;$('oAuto').checked=!!b;}
@@ -679,7 +687,7 @@ $('selFocus').onchange=e=>{S.focus=e.target.value;};
 $('bReset').onclick=()=>{S.yaw=-0.5;S.pitch=0.55;};
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on',p.id==='p-'+b.dataset.t));});
 document.querySelectorAll('.chips button').forEach(b=>b.onclick=()=>{evF=parseInt(b.dataset.f);document.querySelectorAll('.chips button').forEach(x=>x.classList.toggle('on',x===b));renderEv();});
-addEventListener('keydown',e=>{if(e.code==='Space'&&!/INPUT|SELECT|BUTTON/.test(document.activeElement.tagName)){e.preventDefault();$('bPlay').click();}});
+addEventListener('keydown',e=>{if(e.code==='Space'&&!gEl.classList.contains('on')&&!/INPUT|SELECT|BUTTON/.test(document.activeElement.tagName)){e.preventDefault();$('bPlay').click();}});
 // gesturi
 const ptrs=new Map();let pinch0=0,zoom0=0;
 cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);ptrs.set(e.pointerId,[e.clientX,e.clientY]);if(ptrs.size===2){const a=[...ptrs.values()];pinch0=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1]);zoom0=S.logW;}});
@@ -687,7 +695,7 @@ cv.addEventListener('pointermove',e=>{const p=ptrs.get(e.pointerId);if(!p)return
   if(ptrs.size===1){S.yaw-=(e.clientX-p[0])*0.006;S.pitch=Math.max(-1.55,Math.min(1.55,S.pitch+(e.clientY-p[1])*0.006));p[0]=e.clientX;p[1]=e.clientY;}
   else{p[0]=e.clientX;p[1]=e.clientY;const a=[...ptrs.values()],d=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1]);if(pinch0>0){S.logW=Math.max(-1.3,Math.min(10.5,zoom0-Math.log10(d/pinch0)));setAuto(false);}}});
 const up=e=>{ptrs.delete(e.pointerId);pinch0=0;};cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
-cv.addEventListener('wheel',e=>{e.preventDefault();S.logW=Math.max(-1.3,Math.min(10.5,S.logW+e.deltaY*0.0012));setAuto(false);},{passive:false});
+cv.addEventListener('wheel',e=>{e.preventDefault();S.logW=Math.max(-1.3,Math.min(10.5,S.logW+(e.deltaMode===1?e.deltaY*33:e.deltaMode===2?e.deltaY*400:e.deltaY)*0.0012));setAuto(false);},{passive:false});
 cv.addEventListener('dblclick',()=>{S.yaw=-0.5;S.pitch=0.55;});
 addEventListener('resize',resize);
 
@@ -698,6 +706,7 @@ const pad2=n=>(n<10?'0':'')+n;
 function partsToTau(y,mo,d,H,Mi){
   if(d<1||d>31)return null;if(y<1977)return -1e3;
   if(y<=9999){const J=M.jd(y,mo,d,H+Mi/60),c=M.calFromJD(J);if(Math.floor(c.d)!==d||c.m!==mo)return null;return (J-2451545)/365.25;}
+  const dim=[31,(y%4===0&&(y%100!==0||y%400===0))?29:28,31,30,31,30,31,31,30,31,30,31][mo-1];if(d>dim)return null;
   return (y-2000)+(mo-1)/12+(d-1)/365.25+(H+Mi/60)/8766;}
 function setHash(t){try{let s;if(t<=1000){const c=M.calFromJD(2451545+t*365.25);s=c.y+'-'+pad2(c.m)+'-'+pad2(Math.floor(c.d));}else s='y'+Math.round(2000+t);history.replaceState(null,'','#t='+s);}catch(e){}}
 function clearHash(){try{if(location.hash)history.replaceState(null,'',location.pathname+location.search);}catch(e){}}
@@ -710,15 +719,15 @@ function openGo(){const t=S.tau;let y,mo=1,d=1,H=12,Mi=0;
   if(!matchMedia('(pointer:coarse)').matches)$('gY').focus();}
 function closeGo(){if(!gEl.classList.contains('on'))return;gEl.classList.remove('on');try{(gGo_prev||$('bGo')).focus();}catch(e){}}
 function goTo(tau){gMsg('');if(!isFinite(tau)){gMsg('Valoare invalidă.',1);return;}let t=tau,note='';
-  if(t<TMIN){t=TMIN;note='Înainte de lansări nu există sonde — am ales momentul lansărilor.';}else if(t>TMAX){t=TMAX;note='Am ales limita simulării: +1 miliard de ani.';}
-  setPlay(false);if(S.mode==='live'){selRate.value=5;S.mode='rate';S.rate=1;}
+  if(t<TMIN){t=TMIN;note='Înainte de lansări nu există sonde — am ales momentul lansărilor.';}else if(t>TMAX){if(t-TMAX>1e6)note='Am ales limita simulării: +1 miliard de ani.';t=TMAX;}
+  setPlay(false);leaveLive();
   S.tau=t;syncUI();setHash(t);if(note)gMsg(note);else closeGo();}
-function goDate(){const d=parseInt($('gD').value),mo=parseInt(gMo.value),y=parseInt($('gY').value),hm=($('gH').value||'12:00').split(':'),H=+hm[0]||0,Mi=+hm[1]||0;
+function goDate(){const d=parseInt($('gD').value),mo=parseInt(gMo.value),y=Math.round(Number($('gY').value)),hm=($('gH').value||'12:00').split(':'),H=+hm[0]||0,Mi=+hm[1]||0;
   if(!isFinite(d)||!isFinite(y)||y<1){gMsg('Completează ziua și anul.',1);return;}
   const t=partsToTau(y,mo,d,H,Mi);if(t===null){gMsg('Data nu există (verifică ziua și luna).',1);return;}goTo(t);}
 function goRel(){const n=parseFloat($('gN').value);if(!isFinite(n)||n<0){gMsg('Introdu un număr pozitiv.',1);return;}goTo(nowTau()+parseInt($('gS').value)*n*parseFloat($('gU').value));}
 const aria=(id,t)=>$(id).setAttribute('aria-label',t);
-aria('bStart','Înapoi la lansare');aria('bGo','Mergi la un moment anume');aria('bMore','Restrânge sau extinde comenzile');aria('tSl','Timp: de la lansare până la un miliard de ani');aria('zSl','Scara vederii');aria('selRate','Viteza timpului');aria('selZ','Salt la o scară');aria('bNow','Acum, timp real');
+aria('bStart','Înapoi la lansare');aria('bGo','Mergi la un moment anume');aria('bMore','Restrânge sau extinde comenzile');aria('tSl','Timp: de la lansare până la un miliard de ani');aria('zSl','Scara vederii');aria('selRate','Viteza timpului');aria('selZ','Salt la o scară');aria('bNow','Acum, timp real');aria('gS','Înainte sau după azi');aria('gN','Număr');aria('gU','Unitate de timp');aria('selFocus','Centrul vederii');$('gMsg').setAttribute('role','status');
 let gGo_prev=null;
 $('bGo').onclick=openGo;$('gX').onclick=closeGo;gEl.addEventListener('click',e=>{if(e.target===gEl)closeGo();});
 $('gGo').onclick=goDate;$('gGo2').onclick=goRel;
@@ -728,20 +737,21 @@ addEventListener('keydown',e=>{if(e.key==='Escape')closeGo();
     if(!gEl.contains(document.activeElement)){e.preventDefault();a.focus();}else if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus();}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus();}}});
 [['Lansare V2',()=>V2.launch],['Lansare V1',()=>V1.launch],['Jupiter · V1',()=>M.T(1979,3,5,12.1)],['Pale Blue Dot',()=>M.T(1990,2,14)],['Heliopauză V1',()=>V1.hp],['Heliopauză V2',()=>V2.hp],['Azi',()=>nowTau()],['Peste 100 de ani',()=>nowTau()+100],['Anul 5 000',()=>3000],['Anul 40 000',()=>38000],['Peste 1 mil. ani',()=>nowTau()+1e6],['Peste 1 mld. ani',()=>TMAX]].forEach(c=>{
   const b=document.createElement('button');b.textContent=c[0];b.onclick=()=>goTo(c[1]());$('gChips').appendChild(b);});
+const RM=(()=>{try{return matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){return false;}})();
 // ---------- bucla principală ----------
 let last=performance.now(),telT=0,uiT=0;
-function frame(ts){const dt=Math.min(0.1,(ts-last)/1000);last=ts;
+function frame(ts){try{frameBody(ts);}catch(err){if(!frame.e){frame.e=1;console.error(err);}}requestAnimationFrame(frame);}
+function frameBody(ts){const dt=Math.min(0.1,(ts-last)/1000);last=ts;
   if(S.play){if(S.mode==='live'){S.tau=clampT(nowTau());}else if(S.mode==='cine'){let p=pOfTau(S.tau)+7*dt;if(p>=1000){p=1000;setPlay(false);}S.tau=tauOfP(p);}
     else{S.tau+=S.rate*dt;if(S.tau>=TMAX){S.tau=TMAX;setPlay(false);}}}
   const cor=!!S.opts.cor;P.v1=M.voyPos(V1,S.tau,cor);P.v2=M.voyPos(V2,S.tau,cor);{const nt=nowTau();P.showNow=Math.abs(S.tau-nt)>0.003;if(P.showNow){P.n1=M.voyPos(V1,nt,cor);P.n2=M.voyPos(V2,nt,cor);}}P.planets=[];for(let i=0;i<8;i++)P.planets.push(M.planetPos(i,S.tau));
   F=S.focus==='v1'?P.v1:S.focus==='v2'?P.v2:S.focus==='mid'?[(P.v1[0]+P.v2[0])/2,(P.v1[1]+P.v2[1])/2,(P.v1[2]+P.v2[2])/2]:[0,0,0];
-  if(S.opts.auto){const d=a=>M.norm(M.sub(a,F));let R=Math.max(d(P.v1),d(P.v2),d([0,0,0]));R=Math.max(R,1.8);const tgt=Math.log10(R*(compact?1.2:1.45));S.logW+=(tgt-S.logW)*(1-Math.exp(-dt*4));}
+  if(S.opts.auto){const d=a=>M.norm(M.sub(a,F));let R=Math.max(d(P.v1),d(P.v2),d([0,0,0]));R=Math.max(R,1.8);const tgt=Math.log10(R*(compact?1.2:1.45));S.logW+=(tgt-S.logW)*(RM?1:1-Math.exp(-dt*4));}
   layout();setView();draw();
-  setT('dateBig',S.play&&S.mode==='live'?new Date().toLocaleString('ro-RO',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):fmtDate(S.tau));setT('dateSub',fmtDateSub(S.tau));
+  setT('dateBig',S.play&&S.mode==='live'?fmtDateTime(S.tau):fmtDate(S.tau));setT('dateSub',fmtDateSub(S.tau));
   setT('tLabel',S.mode==='cine'?'ritm cinematic':S.mode==='live'&&S.play?'timp real':'');
   uiT+=dt;if(uiT>0.1){uiT=0;if(document.activeElement!==$('tSl'))$('tSl').value=pOfTau(S.tau);if(document.activeElement!==$('zSl'))$('zSl').value=S.logW;}
-  telT+=dt;if(telT>0.2){telT=0;updTel();}
-  requestAnimationFrame(frame);}
+  telT+=dt;if(telT>0.2){telT=0;updTel();}}
 modeClasses();S.side=!compact&&!sheet;
 resize();applySide();S.mode='live';S.tau=clampT(nowTau());const hp=parseHash();if(hp!==null){S.tau=clampT(hp);S.mode='rate';S.rate=1;selRate.value=5;}
 renderEv();syncUI();updTel();setPlay(hp===null);
