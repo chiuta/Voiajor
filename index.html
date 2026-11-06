@@ -1,0 +1,754 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>VOIAJOR — Voyager 1 și 2, de la lansare în viitorul îndepărtat</title>
+<style>
+:root{--bg:#04060c;--panel:rgba(9,13,23,.93);--line:rgba(140,170,220,.22);--tx:#dbe6f6;--mut:#8ea0bd;--v1:#ffb347;--v2:#4fc3f7;--acc:#9ad0ff;--ok:#7be0a4;--toph:48px;--ctlh:150px;--sidew:360px;--sheeth:45vh}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);font:14px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow:hidden;overscroll-behavior:none;-webkit-text-size-adjust:100%}
+body.compact{font-size:13px}
+#cv{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+#cv:active{cursor:grabbing}
+button,select,input{font:inherit;color:inherit}
+button,select{background:rgba(30,42,66,.88);border:1px solid var(--line);border-radius:8px;padding:6px 10px;cursor:pointer;min-height:32px}
+button:hover{background:rgba(52,72,110,.9)}
+button.on{background:#27508a;border-color:#6fb0ff}
+body.compact button,body.compact select{padding:4px 9px;min-height:30px;font-size:13px}
+@media (pointer:coarse){button,select{min-height:36px}body.compact button,body.compact select{min-height:34px}}
+#top{position:fixed;left:0;right:0;top:0;height:var(--toph);display:flex;justify-content:space-between;align-items:center;padding:0 max(12px,env(safe-area-inset-right)) 0 max(12px,env(safe-area-inset-left));gap:8px;pointer-events:none;z-index:5}
+#top>*{pointer-events:auto}
+.brand{display:flex;flex-direction:column;line-height:1.15;text-shadow:0 1px 6px #000}
+.brand b{letter-spacing:.25em;font-size:16px}
+.brand span{color:var(--mut);font-size:11px}
+body.compact .brand b{font-size:13px;letter-spacing:.2em}
+body.compact .brand span{display:none}
+.tb{display:flex;gap:6px}
+#hud{position:fixed;left:max(12px,env(safe-area-inset-left));top:calc(var(--toph) + 4px);z-index:4;pointer-events:none;text-shadow:0 1px 5px #000,0 0 3px #000;max-width:min(70vw,520px)}
+#dateBig{font-size:20px;font-weight:600;letter-spacing:.02em;line-height:1.2}
+#dateSub{color:var(--mut);font-size:12px}
+#scaleTxt{margin-top:6px;color:var(--acc);font-size:12px}
+#bar{margin-top:3px;height:6px;border:2px solid var(--acc);border-top:none;width:110px}
+body.compact #dateBig{font-size:15px}
+body.compact #dateSub{font-size:10.5px;line-height:1.25}
+body.compact #scaleTxt{margin-top:3px;font-size:10.5px}
+body.compact #bar{height:5px;border-width:1.5px}
+#side{position:fixed;right:0;top:var(--toph);bottom:var(--ctlh);width:var(--sidew);max-width:100%;background:var(--panel);border-left:1px solid var(--line);border-top:1px solid var(--line);z-index:6;display:flex;flex-direction:column;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding-right:env(safe-area-inset-right)}
+#side.hide{display:none}
+body.sheet #side{left:0;right:0;top:auto;width:100%;height:var(--sheeth);border-left:none;border-radius:14px 14px 0 0;padding-right:0}
+.tabs{display:flex;border-bottom:1px solid var(--line)}
+.tabs button{flex:1;border:none;border-radius:0;background:transparent;padding:8px 2px;font-size:13px;color:var(--mut)}
+body.compact .tabs button{font-size:12px;padding:6px 1px}
+body.sheet .tabs button:first-child{border-top-left-radius:14px}
+body.sheet .tabs button:last-child{border-top-right-radius:14px}
+.tabs button.on{color:#fff;background:rgba(60,100,170,.35);box-shadow:inset 0 -2px 0 var(--acc)}
+.pane{display:none;overflow:auto;padding:10px 12px;flex:1;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.pane.on{display:block}
+body.compact .pane{padding:7px 10px}
+.card{border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin-bottom:10px;background:rgba(18,26,44,.55)}
+.card h3{margin:0 0 4px;font-size:15px}
+dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:13px}
+dt{color:var(--mut)}
+dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
+body.compact .card{padding:6px 8px;margin-bottom:7px}
+body.compact .card h3{font-size:13px;margin-bottom:2px}
+body.compact dl{font-size:12px;gap:1px 8px}
+/* sheet: cele două sonde unul lângă altul când e loc */
+body.sheet #p-tel{display:none}
+body.sheet #p-tel.on{display:grid;grid-template-columns:1fr;gap:0}
+@media (min-width:600px){body.sheet #p-tel.on{grid-template-columns:1fr 1fr;gap:0 8px;align-content:start}body.sheet #p-tel .small{grid-column:1/3}}
+.ev{padding:7px 8px;border-bottom:1px solid var(--line);cursor:pointer;border-radius:6px}
+.ev:hover{background:rgba(70,110,180,.2)}
+.ev .d{font-size:12px;color:var(--mut)}
+.ev .t{font-weight:600}
+.ev .x{font-size:12px;color:#b9c8e0}
+body.compact .ev{padding:5px 6px}
+body.compact .ev .d,body.compact .ev .x{font-size:11px}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
+.chips{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+td,th{padding:3px 4px;border-bottom:1px solid var(--line);text-align:left}
+th{color:var(--mut);font-weight:500}
+td.r{text-align:right;font-variant-numeric:tabular-nums}
+body.compact table{font-size:12px}
+.small{font-size:12px;color:var(--mut)}
+.pane h4{margin:12px 0 4px;font-size:13px;color:var(--acc)}
+.pane p{margin:4px 0 8px;font-size:13px}
+body.compact .pane p{font-size:12.5px}
+#ctl{position:fixed;left:0;right:0;bottom:0;background:var(--panel);border-top:1px solid var(--line);padding:8px max(12px,env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));z-index:7;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+body.compact #ctl{padding-top:5px;padding-bottom:calc(5px + env(safe-area-inset-bottom))}
+.row{display:flex;gap:6px;align-items:center;flex-wrap:nowrap}
+.row+.row{margin-top:4px}
+#tLabel{margin-left:auto;color:var(--acc);font-size:12px;white-space:nowrap}
+#bMore{display:none;margin-left:auto}
+body.compact #bMore{display:inline-block}
+body.compact #tLabel{display:none}
+body.compact .lbl{display:none}
+#selRate{min-width:0;flex:0 1 190px;text-overflow:ellipsis}
+body.compact #selRate{flex:1 1 auto;max-width:210px}
+.sl{position:relative;margin-top:2px}
+input[type=range]{width:100%;accent-color:#6fb0ff;margin:4px 0;height:24px}
+#ticks{position:relative;height:14px;font-size:10px;color:var(--mut)}
+#ticks span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+#ticks span:first-child{transform:none}
+#ticks span:last-child{transform:translateX(-100%)}
+body.compact #ticks{height:13px;font-size:10px}
+body.compact #ticks span:not(.k){display:none}
+.zrow input[type=range]{flex:1;min-width:80px}
+#selZ{flex:0 1 190px;min-width:0}
+body.compact #selZ{flex:0 0 118px}
+#ctl.min .zrow,#ctl.min #ticks{display:none}
+#opt{position:fixed;right:max(10px,env(safe-area-inset-right));bottom:calc(var(--ctlh) + 8px);max-height:calc(100vh - var(--toph) - var(--ctlh) - 16px);max-height:calc(100dvh - var(--toph) - var(--ctlh) - 16px);overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px;z-index:9;display:none;min-width:240px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+#opt.on{display:block}
+#opt label{display:flex;gap:8px;align-items:center;padding:3px 0;cursor:pointer}
+#opt select{width:100%;margin:4px 0 8px}
+body.compact #opt{left:max(10px,env(safe-area-inset-left));min-width:0;padding:8px 10px;font-size:13px}
+@media (min-width:480px){body.compact #opt{left:auto;min-width:260px}}
+@media (hover:none){body.compact #opt label{padding:5px 0}}
+
+#goto{position:fixed;inset:0;background:rgba(2,4,10,.62);z-index:20;display:none;align-items:center;justify-content:center;padding:12px;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+#goto.on{display:flex}
+.gbox{width:100%;max-width:440px;max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);overflow:auto;background:#0b111e;border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+.ghead{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.ghead b{font-size:15px}
+.gsec{border-top:1px solid var(--line);padding:8px 0 6px}
+.glab{color:var(--acc);font-size:12px;margin-bottom:6px}
+.ggrid{display:grid;grid-template-columns:.8fr 1.5fr 1.1fr 1fr;gap:8px}
+.ggrid2{display:grid;grid-template-columns:1fr 1fr 1.6fr;gap:8px}
+.gbox label{display:block;color:var(--mut);font-size:11px}
+.gbox input,.gbox select{width:100%;margin-top:2px;background:rgba(30,42,66,.88);border:1px solid var(--line);border-radius:8px;padding:6px 8px;min-height:34px;color:var(--tx)}
+.ggrid2 input,.ggrid2 select{margin-top:0}
+.gbox button.pri{width:100%;margin-top:8px;background:#27508a;border-color:#6fb0ff}
+#gMsg{min-height:16px;margin-top:4px}
+#gChips button{font-size:12px;padding:3px 8px;min-height:28px}
+body.compact .ggrid{grid-template-columns:1fr 1.6fr}
+body.compact .ggrid2{grid-template-columns:1fr 1fr}
+body.compact .ggrid2 select:last-child{grid-column:1/3}
+</style>
+</head>
+<body>
+<canvas id="cv"></canvas>
+
+<div id="top">
+  <div class="brand"><b>VOIAJOR</b><span>Voyager 1 · Voyager 2 — de la lansare până în viitorul îndepărtat</span></div>
+  <div class="tb"><button id="bSide" class="on">Date</button><button id="bOpt">Opțiuni</button></div>
+</div>
+
+<div id="hud">
+  <div id="dateBig"></div>
+  <div id="dateSub"></div>
+  <div id="scaleTxt"></div>
+  <div id="bar"></div>
+</div>
+
+<aside id="side">
+  <div class="tabs">
+    <button data-t="tel" class="on">Telemetrie</button>
+    <button data-t="evs">Evenimente</button>
+    <button data-t="stars">Stele</button>
+    <button data-t="about">Despre</button>
+  </div>
+  <div class="pane on" id="p-tel">
+    <div class="card" id="c1"><h3><span class="dot" style="background:var(--v1)"></span>Voyager 1</h3><dl id="d1"></dl></div>
+    <div class="card" id="c2"><h3><span class="dot" style="background:var(--v2)"></span>Voyager 2</h3><dl id="d2"></dl></div>
+    <div class="small">Mărimile se referă la momentul simulat. După 2026 totul este extrapolare.</div>
+  </div>
+  <div class="pane" id="p-evs">
+    <div class="chips"><button data-f="0" class="on">Ambele</button><button data-f="1">Voyager 1</button><button data-f="2">Voyager 2</button></div>
+    <div id="evList"></div>
+  </div>
+  <div class="pane" id="p-stars">
+    <h4>Cele mai mari apropieri de stele (model, din 2026 încolo)</h4>
+    <div id="appr"><span class="small">Se calculează…</span></div>
+    <h4>Stele cele mai apropiate de Soare la momentul simulat</h4>
+    <div id="nearNow"></div>
+  </div>
+  <div class="pane" id="p-about"></div>
+</aside>
+
+<div id="opt">
+  <b>Afișare</b>
+  <label><input type="checkbox" id="oOrb" checked> Orbitele planetelor</label>
+  <label><input type="checkbox" id="oLab" checked> Etichete</label>
+  <label><input type="checkbox" id="oHel" checked> Heliosferă (șoc terminal, heliopauză)</label>
+  <label><input type="checkbox" id="oOort" checked> Norul Oort</label>
+  <label><input type="checkbox" id="oStar" checked> Stele apropiate</label>
+  <label><input type="checkbox" id="oRing" checked> Cercuri de distanță (zile-lumină, ani-lumină)</label>
+  <label><input type="checkbox" id="oFut" checked> Traseul viitor (punctat)</label>
+  <label><input type="checkbox" id="oGal" checked> Galaxia (la scări mari)</label>
+  <label><input type="checkbox" id="oAuto" checked> Zoom automat (urmărește sondele)</label>
+  <label><input type="checkbox" id="oCor"> Cadru co-rotativ cu Galaxia</label>
+  <b>Centrul vederii</b>
+  <select id="selFocus"><option value="sun">Soarele</option><option value="v1">Voyager 1</option><option value="v2">Voyager 2</option><option value="mid">Mijlocul dintre sonde</option></select>
+  <button id="bReset">Resetează unghiul vederii</button>
+</div>
+
+<div id="goto" role="dialog" aria-modal="true" aria-labelledby="gTitle"><div class="gbox">
+  <div class="ghead"><b id="gTitle">Mergi la un moment anume</b><button id="gX" aria-label="Închide">✕</button></div>
+  <div class="gsec"><div class="glab">Dată calendaristică (ora în UTC)</div>
+    <div class="ggrid">
+      <label>Zi<input id="gD" type="number" min="1" max="31" inputmode="numeric"></label>
+      <label>Lună<select id="gM"></select></label>
+      <label>An<input id="gY" type="number" step="1" inputmode="numeric"></label>
+      <label>Ora<input id="gH" type="time"></label>
+    </div>
+    <button id="gGo" class="pri">Mergi la dată</button></div>
+  <div class="gsec"><div class="glab">Față de azi</div>
+    <div class="ggrid2"><select id="gS"><option value="1">peste</option><option value="-1">acum</option></select><input id="gN" type="number" min="0" step="any" value="100" inputmode="decimal"><select id="gU"><option value="0.0027379">zile</option><option value="0.0833333">luni</option><option value="1" selected>ani</option><option value="1000">mii de ani</option><option value="1000000">milioane de ani</option><option value="1000000000">miliarde de ani</option></select></div>
+    <button id="gGo2" class="pri">Mergi</button></div>
+  <div class="gsec"><div class="glab">Momente rapide</div><div id="gChips" class="chips"></div></div>
+  <div id="gMsg" class="small"></div>
+</div></div>
+
+<section id="ctl">
+  <div class="row">
+    <button id="bStart" title="La lansare">⏮</button>
+    <button id="bPlay" title="Redare / pauză (Spațiu)">▶<span class="lbl"> Redare</span></button>
+    <button id="bNow" title="Momentul actual (timp real)">Acum</button>
+    <button id="bGo" title="Mergi la un moment anume, în trecut sau viitor">📅<span class="lbl"> Dată</span></button>
+    <select id="selRate" title="Viteza timpului"></select>
+    <span id="tLabel"></span><button id="bMore" title="Restrânge / extinde comenzile">▾</button>
+  </div>
+  <div class="sl"><input type="range" id="tSl" min="0" max="1000" step="0.02" value="0"><div id="ticks"></div></div>
+  <div class="row zrow">
+    <span class="small lbl">Scară:</span>
+    <input type="range" id="zSl" min="-1.3" max="10.5" step="0.005">
+    <select id="selZ"></select>
+  </div>
+</section>
+
+<script>
+/*MODEL-START*/
+const M=(function(){
+const PI=Math.PI, D2R=PI/180, TWO_PI=2*PI;
+const GM=4*PI*PI;                 // UA^3 / an^2
+const KMS=0.2109495;              // 1 km/s in UA/an
+const AU_KM=149597870.7, LY_AU=63241.077, PC_AU=206264.806, LD_AU=173.14463, AU_PC=1/PC_AU;
+const EPS=23.43929*D2R, CE=Math.cos(EPS), SE=Math.sin(EPS);
+const norm=v=>Math.hypot(v[0],v[1],v[2]);
+const sub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]];
+const mul=(a,s)=>[a[0]*s,a[1]*s,a[2]*s];
+const clamp=(x,a,b)=>Math.min(b,Math.max(a,x));
+
+function jd(y,m,d,h){h=h||0;const a=Math.floor((14-m)/12),yy=y+4800-a,mm=m+12*a-3;
+  const n=d+Math.floor((153*mm+2)/5)+365*yy+Math.floor(yy/4)-Math.floor(yy/100)+Math.floor(yy/400)-32045;return n-0.5+h/24;}
+const T=(y,m,d,h)=>(jd(y,m,d,h||0)-2451545)/365.25;
+function calFromJD(J){J+=0.5;const Z=Math.floor(J),F=J-Z;const al=Math.floor((Z-1867216.25)/36524.25);const A=Z+1+al-Math.floor(al/4);
+  const B=A+1524,C=Math.floor((B-122.1)/365.25),Dd=Math.floor(365.25*C),E=Math.floor((B-Dd)/30.6001);
+  const day=B-Dd-Math.floor(30.6001*E),month=E<14?E-1:E-13,year=month>2?C-4716:C-4715;return {y:year,m:month,d:day,h:F*24};}
+const TAU0=T(2026,11,5,0);
+
+// ---- planete: elemente medii (Standish, 1800-2050) ----
+const EL=[
+['Mercur',0.38709927,0.20563593,7.00497902,252.25032350,77.45779628,48.33076593,0.00000037,0.00001906,-0.00594749,149472.67411175,0.16047689,-0.12534081],
+['Venus',0.72333566,0.00677672,3.39467605,181.97909950,131.60246718,76.67984255,0.00000390,-0.00004107,-0.00078890,58517.81538729,0.00268329,-0.27769418],
+['Pământ',1.00000261,0.01671123,-0.00001531,100.46457166,102.93768193,0.0,0.00000562,-0.00004392,-0.01294668,35999.37244981,0.32327364,0.0],
+['Marte',1.52371034,0.09339410,1.84969142,-4.55343205,-23.94362959,49.55953891,0.00001847,0.00007882,-0.00813131,19140.30268499,0.44441088,-0.29257343],
+['Jupiter',5.20288700,0.04838624,1.30439695,34.39644051,14.72847983,100.47390909,-0.00011607,-0.00013253,-0.00183714,3034.74612775,0.21252668,0.20469106],
+['Saturn',9.53667594,0.05386179,2.48599187,49.95424423,92.59887831,113.66242448,-0.00125060,-0.00050991,0.00193609,1222.49362201,-0.41897216,-0.28867794],
+['Uranus',19.18916464,0.04725744,0.77263783,313.23810451,170.95427630,74.01692503,-0.00196176,-0.00004397,-0.00242939,428.48202785,0.40805281,0.04240589],
+['Neptun',30.06992276,0.00859048,1.77004347,-55.12002969,44.96476227,131.78422574,0.00026291,0.00005105,0.00035372,218.45945325,-0.32241464,-0.00508664]];
+function kepler(Mm,e){let E=Mm+e*Math.sin(Mm);for(let i=0;i<12;i++)E-=(E-e*Math.sin(E)-Mm)/(1-e*Math.cos(E));return E;}
+function elemAt(i,T){const q=EL[i],Tc=clamp(T,-3,3);
+  return {a:q[1]+q[7]*Tc,e:q[2]+q[8]*Tc,I:(q[3]+q[9]*Tc)*D2R,L:q[4]+q[10]*T,w:q[5]+q[11]*Tc,O:(q[6]+q[12]*Tc)*D2R};}
+function rotOrb(s,xp,yp){const om=s.w*D2R-s.O,cw=Math.cos(om),sw=Math.sin(om),cO=Math.cos(s.O),sO=Math.sin(s.O),cI=Math.cos(s.I),sI=Math.sin(s.I);
+  return [(cw*cO-sw*sO*cI)*xp+(-sw*cO-cw*sO*cI)*yp,(cw*sO+sw*cO*cI)*xp+(-sw*sO+cw*cO*cI)*yp,(sw*sI)*xp+(cw*sI)*yp];}
+function planetPos(i,tau){const s=elemAt(i,tau/100);let Mm=(((s.L-s.w)%360)+540)%360-180;Mm*=D2R;const E=kepler(Mm,s.e);
+  return rotOrb(s,s.a*(Math.cos(E)-s.e),s.a*Math.sqrt(1-s.e*s.e)*Math.sin(E));}
+function planetOrbit(i,n){const s=elemAt(i,0),o=[];for(let k=0;k<=n;k++){const E=k/n*TWO_PI;o.push(rotOrb(s,s.a*(Math.cos(E)-s.e),s.a*Math.sqrt(1-s.e*s.e)*Math.sin(E)));}return o;}
+
+// ---- cadre de coordonate ----
+const ecl2eq=v=>[v[0],v[1]*CE-v[2]*SE,v[1]*SE+v[2]*CE];
+const eq2ecl=v=>[v[0],v[1]*CE+v[2]*SE,-v[1]*SE+v[2]*CE];
+const GM_=[[-0.0548755604,-0.8734370902,-0.4838350155],[0.4941094279,-0.4448296300,0.7469822445],[-0.8676661490,-0.1980763734,0.4559837762]];
+const eq2gal=v=>GM_.map(r=>r[0]*v[0]+r[1]*v[1]+r[2]*v[2]);
+const gal2eq=v=>[0,1,2].map(j=>GM_[0][j]*v[0]+GM_[1][j]*v[1]+GM_[2][j]*v[2]);
+const ecl2gal=v=>eq2gal(ecl2eq(v)), gal2ecl=v=>eq2ecl(gal2eq(v));
+const radec=(ra,dec)=>[Math.cos(dec)*Math.cos(ra),Math.cos(dec)*Math.sin(ra),Math.sin(dec)];
+
+// ---- dinamica galactică locală (ecuațiile Hill / epiciclice) ----
+const KMS_PCMYR=1.0227121650537077;
+const OMEGA=27.2*1.0227e-3, KAPPA=35.98*1.0227e-3, NU=0.080;   // rad/Mil. ani
+const R0_PC=8200, DISK_PC=15000;
+function makeHill(tref,pE,vE){ // pE in UA, vE in km/s (ecliptic, relativ la Soare)
+  const pg=ecl2gal(pE).map(x=>x*AU_PC), vg=ecl2gal(vE).map(x=>x*KMS_PCMYR);
+  const x=-pg[0],y=pg[1],z=pg[2],ux=-vg[0],uy=vg[1],uz=vg[2];
+  return {tref,s:[x,y,z,ux+OMEGA*y,uy-OMEGA*x,uz]};}
+function hillState(o,tau){const t=(tau-o.tref)*1e-6,s=o.s,x0=s[0],y0=s[1],z0=s[2],vx0=s[3],vy0=s[4],vz0=s[5];
+  const xg=(2*OMEGA*vy0+4*OMEGA*OMEGA*x0)/(KAPPA*KAPPA),c=Math.cos(KAPPA*t),sn=Math.sin(KAPPA*t);
+  const x=xg+(x0-xg)*c+vx0/KAPPA*sn;
+  const y=y0+vy0*t-2*OMEGA*((xg-x0)*t+(x0-xg)*sn/KAPPA+vx0*(1-c)/(KAPPA*KAPPA));
+  const z=z0*Math.cos(NU*t)+vz0/NU*Math.sin(NU*t);
+  return [x,y,z,t];}
+function hillToEcl(x,y,z,t,corot){let X=x,Y=y;if(!corot){const a=OMEGA*t,c=Math.cos(a),s=Math.sin(a);X=x*c-y*s;Y=x*s+y*c;}
+  return gal2ecl([-X,Y,z]).map(v=>v*PC_AU);}
+function hillPos(o,tau,corot){const h=hillState(o,tau);return hillToEcl(h[0],h[1],h[2],h[3],corot);}
+
+// ---- stele apropiate (valori aproximative, J2000) ----
+const STARS_DEF=[
+['Proxima Centauri',217.429,-62.680,4.2465,-3781.7,769.5,-22.2,'#ff8f70'],
+['α Centauri',219.902,-60.834,4.367,-3679.3,473.7,-21.4,'#ffe9b0'],
+['Steaua lui Barnard',269.452,4.693,5.963,-802.8,10362.5,-110.5,'#ff9a78'],
+['Wolf 359',164.120,7.015,7.86,-3866,-2699,19.5,'#ff8a6a'],
+['Lalande 21185',165.834,35.970,8.31,-580.5,-4776.6,-84.7,'#ff9f7d'],
+['Sirius',101.287,-16.716,8.60,-546.0,-1223.1,-5.5,'#cfe4ff'],
+['Ross 154',282.46,-23.84,9.69,637.6,-192.1,-4.0,'#ff9a78'],
+['Ross 248',355.4793,44.1775,10.306,112.5,-1591.7,-77.3,'#ff8a6a'],
+['ε Eridani',53.233,-9.458,10.475,-975.2,19.5,16.5,'#ffd9a0'],
+['Lacaille 9352',346.47,-35.85,10.72,6766.9,1327.7,9.7,'#ff9a78'],
+['Procyon',114.827,5.225,11.46,-714.6,-1036.8,-3.2,'#fff3d8'],
+['61 Cygni',316.725,38.749,11.40,4164.2,3249.5,-65.7,'#ffc58a'],
+['τ Ceti',26.017,-15.937,11.91,-1721.8,854.9,-16.7,'#ffe2b0'],
+['Altair',297.696,8.868,16.73,536.2,385.5,-26.1,'#f2f6ff'],
+['Gliese 445',176.9224,78.6912,17.137,748.4,480.8,-111.5,'#ff9a78'],
+['Vega',279.235,38.784,25.04,200.9,287.5,-13.9,'#dfe9ff'],
+['Fomalhaut',344.413,-29.622,25.13,329.2,-164.7,6.5,'#e8f0ff'],
+['Arcturus',213.915,19.182,36.7,-1093.4,-1999.4,-5.2,'#ffc890'],
+['Gliese 710',274.962,-1.939,62.4,-1.7,-1.4,-14.4,'#ffb08a']];
+const STARS=STARS_DEF.map(q=>{const ra=q[1]*D2R,dec=q[2]*D2R,dAU=q[3]*LY_AU,dpc=dAU*AU_PC,eq=radec(ra,dec);
+  const e=[-Math.sin(ra),Math.cos(ra),0],nn=[-Math.sin(dec)*Math.cos(ra),-Math.sin(dec)*Math.sin(ra),Math.cos(dec)];
+  const k=4.74047*dpc/1000,a=q[4]*k,b=q[5]*k;
+  const vEq=[0,1,2].map(i=>q[6]*eq[i]+a*e[i]+b*nn[i]);
+  const p=eq2ecl(eq.map(c=>c*dAU)),v=eq2ecl(vEq);
+  return {name:q[0],col:q[7],d0:q[3],speed:norm(v),hill:makeHill(0,p,v)};});
+function starPos(s,tau,corot){return hillPos(s.hill,tau,corot);}
+
+// ---- sondele ----
+function cyl(p){let th=Math.atan2(p[1],p[0]);if(th<0)th+=TWO_PI;return {r:Math.hypot(p[0],p[1]),th,z:p[2]};}
+function polarSeg(A,B){let dth=((B.th-A.th)%TWO_PI+TWO_PI)%TWO_PI;const N=64,G=new Float64Array(N+1);
+  const f=u=>1-Math.pow(1-u,1.5);let prev=1/Math.pow(A.r+(B.r-A.r)*f(0),2);
+  for(let i=1;i<=N;i++){const r=A.r+(B.r-A.r)*f(i/N),c=1/(r*r);G[i]=G[i-1]+(prev+c)/2/N;prev=c;}
+  const Gt=G[N];
+  return function(u){u=clamp(u,0,1);const r=A.r+(B.r-A.r)*f(u),x=u*N,i=Math.min(N-1,Math.floor(x)),g=G[i]+(G[i+1]-G[i])*(x-i);
+    const th=A.th+dth*g/Gt,s=u*u*(3-2*u),z=A.z+(B.z-A.z)*s;return [r*Math.cos(th),r*Math.sin(th),z];};}
+// ---- arce balistice (problema Lambert, conice heliocentrice) între întâlniri ----
+function stumpff(z){if(z>1e-8){const s=Math.sqrt(z);return [(1-Math.cos(s))/z,(s-Math.sin(s))/(s*z)];}if(z<-1e-8){const s=Math.sqrt(-z);return [(Math.cosh(s)-1)/(-z),(Math.sinh(s)-s)/(s*(-z))];}return [0.5-z/24,1/6-z/120];}
+const dot3=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+function lambertSolve(r1,r2,tof){const R1=norm(r1),R2=norm(r2),sm=Math.sqrt(GM);
+  let dnu=Math.acos(clamp(dot3(r1,r2)/(R1*R2),-1,1));if(r1[0]*r2[1]-r1[1]*r2[0]<0)dnu=TWO_PI-dnu;
+  const sd=Math.sin(dnu),cd=Math.cos(dnu);if(Math.abs(sd)<1e-4||!(tof>0))return null;
+  const A=sd*Math.sqrt(R1*R2/(1-cd));
+  const yf=z=>{const c=stumpff(z);return R1+R2+A*(z*c[1]-1)/Math.sqrt(c[0]);};
+  const tf=z=>{const y=yf(z);if(!(y>=0))return NaN;const c=stumpff(z);return (Math.pow(y/c[0],1.5)*c[1]+A*Math.sqrt(y))/sm;};
+  let lo=-4000,hi=TWO_PI*TWO_PI-1e-3;while(!(yf(lo)>=0)&&lo<-1e-4)lo*=0.85;
+  if(!(tf(hi)>=tof)||!(tf(lo)<=tof))return null;
+  for(let i=0;i<120;i++){const mid=(lo+hi)/2,t=tf(mid);if(t<tof)lo=mid;else hi=mid;}
+  const z=(lo+hi)/2,y=yf(z),f=1-y/R1,g=A*Math.sqrt(y/GM);if(!(g>0))return null;
+  return [0,1,2].map(i=>(r2[i]-f*r1[i])/g);}
+function propagateKep(r0,v0,dt){if(dt===0)return r0.slice();const R0=norm(r0),sm=Math.sqrt(GM),vr0=dot3(r0,v0)/R0,alpha=2/R0-dot3(v0,v0)/GM;
+  let chi=Math.abs(alpha)>1e-9?sm*Math.abs(alpha)*dt:sm*dt/R0;
+  for(let i=0;i<80;i++){const z=alpha*chi*chi,c=stumpff(z),C=c[0],S=c[1];
+    const F=R0*vr0/sm*chi*chi*C+(1-alpha*R0)*chi*chi*chi*S+R0*chi-sm*dt;
+    const dF=R0*vr0/sm*chi*(1-z*S)+(1-alpha*R0)*chi*chi*C+R0;const dc=F/dF;if(!isFinite(dc))break;chi-=dc;if(Math.abs(dc)<1e-12)break;}
+  const z=alpha*chi*chi,c=stumpff(z),f=1-chi*chi/R0*c[0],g=dt-chi*chi*chi/sm*c[1];
+  return [0,1,2].map(i=>f*r0[i]+g*v0[i]);}
+function arcSeg(pa,pb,ta,tb){const tof=tb-ta,v1=lambertSolve(pa,pb,tof);
+  if(v1&&v1.every(isFinite)){const chk=propagateKep(pa,v1,tof);if(norm(sub(chk,pb))<1e-4*norm(pb)){const f=u=>propagateKep(pa,v1,clamp(u,0,1)*tof);f.ballistic=true;return f;}}
+  return polarSeg(cyl(pa),cyl(pb));}
+function buildLine(pS,pE,Ty){const d=sub(pE,pS),L=norm(d),u=mul(d,1/L),N=500;
+  function run(vinf,st){let t=0,sp=0,vp=Math.sqrt(vinf*vinf+2*GM/norm(pS));if(st){st.s[0]=0;st.t[0]=0;}
+    for(let i=1;i<=N;i++){const s=L*Math.pow(i/N,2),q=[pS[0]+u[0]*s,pS[1]+u[1]*s,pS[2]+u[2]*s],v=Math.sqrt(vinf*vinf+2*GM/norm(q));
+      t+=(s-sp)*0.5*(1/vp+1/v);sp=s;vp=v;if(st){st.s[i]=s;st.t[i]=t;}}return t;}
+  let lo=0.3,hi=9;for(let k=0;k<70;k++){const mid=(lo+hi)/2;if(run(mid)>Ty)lo=mid;else hi=mid;}
+  const vinf=(lo+hi)/2,st={s:new Float64Array(N+1),t:new Float64Array(N+1)};run(vinf,st);return {u,L,vinf,pS,st,N};}
+function lineAt(ln,t){const st=ln.st;let a=0,b=ln.N;t=clamp(t,0,st.t[ln.N]);while(b-a>1){const m=(a+b)>>1;if(st.t[m]<=t)a=m;else b=m;}
+  const f=(t-st.t[a])/Math.max(1e-12,st.t[b]-st.t[a]),s=st.s[a]+(st.s[b]-st.s[a])*f;
+  return [ln.pS[0]+ln.u[0]*s,ln.pS[1]+ln.u[1]*s,ln.pS[2]+ln.u[2]*s];}
+function buildFuture(V){const vinf=V.line.vinf,u=V.line.u,p0=V.p0,tmin=1e-4,N=2800,lo=Math.log10(tmin),hi=Math.log10(2e9),dl=(hi-lo)/N;
+  const E=new Float64Array(N+1);let s=0,t=tmin,r=norm(p0),v=Math.sqrt(vinf*vinf+2*GM/r);s=v*tmin;E[0]=s-vinf*t;
+  const at=ss=>norm([p0[0]+u[0]*ss,p0[1]+u[1]*ss,p0[2]+u[2]*ss]);
+  for(let i=1;i<=N;i++){const tn=Math.pow(10,lo+i*dl),dt=tn-t,v1=Math.sqrt(vinf*vinf+2*GM/at(s)),v2=Math.sqrt(vinf*vinf+2*GM/at(s+v1*dt));
+    s+=0.5*(v1+v2)*dt;t=tn;E[i]=s-vinf*t;}
+  return {E,lo,dl,N,v0:Math.sqrt(vinf*vinf+2*GM/norm(p0))};}
+function eAlong(V,D){const F=V.fut;if(D<=0)return 0;if(D<=1e-4)return (F.v0-V.line.vinf)*D;
+  const x=(Math.log10(D)-F.lo)/F.dl,i=Math.min(F.N-1,Math.floor(x));return F.E[i]+(F.E[i+1]-F.E[i])*(x-i);}
+
+const VDEF=[
+ {id:1,name:'Voyager 1',col:'#ffb347',launch:T(1977,9,5,12.9),enc:[{pl:4,t:T(1979,3,5,12.1)},{pl:5,t:T(1980,11,12,23.8)}],r0:172.3,ra:258.0,dec:12.2,ts:T(2004,12,16),hp:T(2012,8,25)},
+ {id:2,name:'Voyager 2',col:'#4fc3f7',launch:T(1977,8,20,14.4),enc:[{pl:4,t:T(1979,7,9,22.0)},{pl:5,t:T(1981,8,26,3.0)},{pl:6,t:T(1986,1,24,17.9)},{pl:7,t:T(1989,8,25,3.9)}],r0:145.1,ra:299.0,dec:-56.0,ts:T(2007,8,30),hp:T(2018,11,5)}];
+const VOY=VDEF.map(d=>{
+  const knots=[{t:d.launch,p:planetPos(2,d.launch)}].concat(d.enc.map(e=>({t:e.t,p:planetPos(e.pl,e.t)})));
+  const p0=eq2ecl(radec(d.ra*D2R,d.dec*D2R)).map(c=>c*d.r0),last=knots[knots.length-1];
+  const line=buildLine(last.p,p0,TAU0-last.t);
+  const segs=[];for(let i=0;i<knots.length-1;i++)segs.push({t1:knots[i].t,t2:knots[i+1].t,f:arcSeg(knots[i].p,knots[i+1].p,knots[i].t,knots[i+1].t)});
+  const V={id:d.id,name:d.name,col:d.col,launch:d.launch,ts:d.ts,hp:d.hp,knots,segs,p0,line,tLast:last.t,enc:d.enc,
+    hill:makeHill(TAU0,p0,mul(line.u,line.vinf/KMS))};
+  V.fut=buildFuture(V);
+  V.vNow=Math.sqrt(line.vinf*line.vinf+2*GM/d.r0)/KMS;
+  return V;});
+function voyPos(V,tau,corot){
+  if(tau<=V.launch)return planetPos(2,tau);
+  if(tau<=V.tLast){for(const s of V.segs){if(tau<=s.t2)return s.f((tau-s.t1)/(s.t2-s.t1));}}
+  if(tau<=TAU0)return lineAt(V.line,tau-V.tLast);
+  const h=hillPos(V.hill,tau,corot),e=eAlong(V,tau-TAU0),u=V.line.u;
+  return [h[0]+u[0]*e,h[1]+u[1]*e,h[2]+u[2]*e];}
+function voySpeed(V,tau){if(tau<=V.launch)return 29.8;const h=Math.max(0.005,tau>TAU0?1e-3*(tau-TAU0):0.005);
+  const a=voyPos(V,tau-h,false),b=voyPos(V,tau+h,false);return norm(sub(b,a))/(2*h)/KMS;}
+function earthDist(V,tau,corot){return norm(sub(voyPos(V,tau,corot),planetPos(2,tau)));}
+function findR(V,R){let D=0.01;while(D<2e9&&norm(voyPos(V,TAU0+D,false))<R)D*=1.5;if(D>=2e9)return null;
+  let lo=TAU0+D/1.5,hi=TAU0+D;for(let i=0;i<60;i++){const m=(lo+hi)/2;if(norm(voyPos(V,m,false))<R)lo=m;else hi=m;}return (lo+hi)/2;}
+function findEarth(V,R){let prev=null,tp=TAU0-2;for(let t=TAU0-2;t<=TAU0+8;t+=5/365.25){const f=earthDist(V,t,false)-R;
+  if(prev!==null&&prev<0&&f>=0){let lo=tp,hi=t;for(let i=0;i<50;i++){const m=(lo+hi)/2;if(earthDist(V,m,false)<R)lo=m;else hi=m;}return (lo+hi)/2;}prev=f;tp=t;}return null;}
+function closest(V,S,tmaxD){let best=1e30,bt=0;for(let D=0;D<=tmaxD;D+=D<4e5?100:400){const t=TAU0+D,d=norm(sub(voyPos(V,t,false),starPos(S,t,false)));if(d<best){best=d;bt=t;}}
+  let lo=bt-400,hi=bt+400;for(let k=0;k<40;k++){const a=lo+(hi-lo)/3,b=hi-(hi-lo)/3;if(norm(sub(voyPos(V,a,false),starPos(S,a,false)))<norm(sub(voyPos(V,b,false),starPos(S,b,false))))hi=b;else lo=a;}
+  const t=(lo+hi)/2;return {t,d:norm(sub(voyPos(V,t,false),starPos(S,t,false)))};}
+function closestSun(S,tmaxD){let best=1e30,bt=0;for(let D=-1e5;D<=tmaxD;D+=200){const d=norm(starPos(S,TAU0+D,false));if(d<best){best=d;bt=TAU0+D;}}return {t:bt,d:best};}
+return {PI,D2R,GM,KMS,AU_KM,LY_AU,PC_AU,LD_AU,TAU0,T,jd,calFromJD,EL,planetPos,planetOrbit,STARS,starPos,VOY,voyPos,voySpeed,earthDist,findR,findEarth,closest,closestSun,
+  hillToEcl,OMEGA,R0_PC,DISK_PC,ecl2eq,eq2ecl,gal2ecl,ecl2gal,norm,sub};
+})();
+/*MODEL-END*/
+</script>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const {D2R,TAU0,LY_AU,LD_AU,AU_KM,VOY,STARS,EL}=M;
+const V1=VOY[0],V2=VOY[1];
+const cv=$('cv'),ctx=cv.getContext('2d');
+const TMIN=Math.min(V1.launch,V2.launch)-0.01, YNOW=TAU0-TMIN, TMAX=TAU0+1e9;
+function nowTau(){return ((Date.now()/86400000+2440587.5)-2451545)/365.25;}
+const clampT=t=>Math.min(TMAX,Math.max(TMIN,t));
+
+// ---------- formatare ----------
+const RO=['ian.','feb.','mar.','apr.','mai','iun.','iul.','aug.','sep.','oct.','nov.','dec.'];
+function nf(x,d){d=d||0;try{return x.toLocaleString('ro-RO',{minimumFractionDigits:d,maximumFractionDigits:d});}catch(e){return x.toFixed(d);}}
+function fmtBig(n){const a=Math.abs(n);if(a>=1e9)return nf(n/1e9,a<1e10?2:1)+' mld.';if(a>=1e6)return nf(n/1e6,a<1e7?2:1)+' mil.';if(a>=1e4)return nf(n/1e3,0)+' mii';return nf(n,0);}
+function fmtDate(tau){
+  if(tau<=1000){const c=M.calFromJD(2451545+tau*365.25);return Math.floor(c.d)+' '+RO[c.m-1]+' '+c.y;}
+  const yr=2000+tau;
+  if(tau<=2e5)return 'anul '+nf(Math.round(yr),0);
+  return 'peste '+fmtBig(tau)+' ani';}
+function relNow(tau){const dn=tau-nowTau(),a=Math.abs(dn),d=a*365.25;if(d<0.5)return 'astăzi';
+  const s=d<1.5?'o zi':d<400?nf(d,0)+' zile':a<2e5?nf(a,a<10?1:0)+' ani':fmtBig(a)+' ani';return dn<0?'acum '+s:'peste '+s;}
+function fmtDateSub(tau){const L=tau-V2.launch,base=relNow(tau),far=tau-TAU0>1e8?' · aproximativ (model liniar)':'';
+  if(compact)return base+(L>0&&tau<=nowTau()+1?' · '+nf(L,1)+' ani de la lansare':far);
+  return base+(L>0?' · '+fmtYears(L)+' de la lansări':' · înainte de lansări')+far;}
+function fmtLT(AU){const s=AU*499.0048;if(s<90)return nf(s,0)+' s';if(s<5400)return nf(s/60,1)+' min';if(s<172800)return nf(s/3600,1)+' ore';const d=s/86400;if(d<700)return nf(d,1)+' zile';return nf(d/365.25,2)+' ani';}
+function fmtDist(AU){const a=Math.abs(AU);if(a<0.1)return nf(AU*AU_KM,0)+' km';if(a<2e4)return nf(AU,a<10?2:1)+' UA';
+  const ly=AU/LY_AU;if(ly<3e3)return nf(ly,ly<10?2:ly<100?1:0)+' a.l.';return nf(ly/3261.56,ly/3261.56<10?2:1)+' kpc';}
+function fmtYears(n){return n<2e5?nf(n,0)+' ani':fmtBig(n)+' ani';}
+function fmtHM(h){const H=Math.floor(h),m=Math.round((h-H)*60);return H+'h '+(m<10?'0':'')+m+'m';}
+
+// ---------- starea ----------
+const S={tau:TMIN,logW:0.6,yaw:-0.5,pitch:0.55,focus:'sun',play:false,mode:'cine',rate:1,opts:{orb:1,lab:1,hel:1,oort:1,star:1,ring:1,fut:1,gal:1,auto:1,cor:0},side:true};
+const RATES=[['Timp real (azi, live)','live',0],['Cinematic (automat)','cine',0],['1 zi / s',0,1/365.25],['1 săptămână / s',0,7/365.25],['1 lună / s',0,1/12],['1 an / s',0,1],['10 ani / s',0,10],['100 ani / s',0,100],['1 000 ani / s',0,1e3],['10 000 ani / s',0,1e4],['100 000 ani / s',0,1e5],['1 mil. ani / s',0,1e6],['10 mil. ani / s',0,1e7],['100 mil. ani / s',0,1e8]];
+const selRate=$('selRate');RATES.forEach((r,i)=>{const o=document.createElement('option');o.value=i;o.textContent=r[0];selRate.appendChild(o);});
+const ZP=[['Sistem interior · 2,5 UA',2.5],['Planetele · 40 UA',40],['Heliosferă / 1 zi-lumină · 250 UA',250],['1 lună-lumină · 7 000 UA',7000],['Norul Oort · 150 000 UA',1.5e5],['Stele apropiate · 20 a.l.',1.3e6],['Vecinătatea · 150 a.l.',1e7],['Zeci de mii a.l. (Galaxia)',3e9]];
+const selZ=$('selZ');selZ.innerHTML='<option value="">Salt la scară…</option>';ZP.forEach((z,i)=>{const o=document.createElement('option');o.value=i;o.textContent=z[0];selZ.appendChild(o);});
+
+// slider timp (liniar 1977→2026, apoi logaritmic până la +1 mld. ani)
+function pOfTau(t){const y=t-TMIN;if(y<=YNOW)return y/YNOW*100;const D=y-YNOW;return 100+900*(Math.log10(D+0.5)+0.30103)/9.30103;}
+function tauOfP(p){if(p<=100)return TMIN+p/100*YNOW;const D=Math.pow(10,-0.30103+(p-100)*9.30103/900)-0.5;return TAU0+D;}
+(function ticks(){const el=$('ticks');const add=(p,t,k)=>{const s=document.createElement('span');s.style.left=(p/10)+'%';s.textContent=t;if(k)s.className='k';el.appendChild(s);};
+  add(0,'1977',1);add(pOfTau(nowTau()),'Azi',1);[[100,'+100'],[1e3,'+1 000',1],[1e4,'+10 mii'],[1e5,'+100 mii',1],[1e6,'+1 mil.'],[1e7,'+10 mil.',1],[1e8,'+100 mil.']].forEach(a=>add(pOfTau(TAU0+a[0]),a[1],a[2]));
+  add(1000,'+1 mld.',1);})();
+
+// ---------- date derivate ----------
+const ORB=[];for(let i=0;i<8;i++)ORB.push(M.planetOrbit(i,160));
+const PCOL=['#b9a99a','#e8c98b','#5aa8ff','#e8764f','#e0b88a','#e9d59a','#8fe0e8','#6a86ff'];
+const PRAD=[2,2.6,2.8,2.4,4.4,4,3.4,3.4];
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const BG=[];{const r=rng(7);for(let i=0;i<260;i++)BG.push([r(),r(),0.3+r()*1.1,0.25+r()*0.6]);}
+const OORT=[];{const r=rng(11);for(let i=0;i<1700;i++){const inner=r()<0.4;let R,u=r()*2-1,ph=r()*6.2832;
+  if(inner){R=Math.pow(10,Math.log10(2e3)+r()*1);u*=0.35;}else R=Math.pow(10,4.3+r()*0.72);
+  const s=Math.sqrt(1-u*u);OORT.push([R*s*Math.cos(ph),R*s*Math.sin(ph),R*u]);}}
+// trasee
+let PATH=[];
+function buildPaths(){PATH=VOY.map(V=>{const ts=[];const N=700;for(let i=0;i<=N;i++)ts.push(V.launch+(TAU0-V.launch)*i/N);V.knots.forEach(k=>ts.push(k.t));ts.sort((a,b)=>a-b);
+  const past=ts.map(t=>M.voyPos(V,t,!!S.opts.cor));const fts=[TAU0],fps=[V.p0];
+  for(let i=0;i<=1500;i++){const D=0.05*Math.pow(2e10,i/1500);if(D>1e9)break;fts.push(TAU0+D);fps.push(M.voyPos(V,TAU0+D,!!S.opts.cor));}
+  return {pts:ts,pps:past,fts,fps};});}
+buildPaths();
+// evenimente
+const EV=[];
+function ev(v,t,lab,title,txt,kind){EV.push({v,t,lab,title,txt,kind:kind||'',pos:null});}
+(function(){const T=M.T;
+ ev(1,T(1977,9,5,12.9),'Lansare','Lansare','Cape Canaveral, racheta Titan IIIE–Centaur. Poartă Discul de Aur.');
+ ev(1,T(1979,3,5,12.1),'Jupiter','Jupiter','Cea mai apropiată trecere: ≈349 000 km de centrul planetei. Descoperă vulcanismul de pe Io.');
+ ev(1,T(1980,11,12,23.8),'Saturn','Saturn','≈124 000 km. Zbor pe lângă Titan; traiectoria urcă deasupra planului planetelor.');
+ ev(1,T(1990,2,14),'Pale Blue Dot','„Pale Blue Dot”','Portretul de familie al planetelor, de la ≈40 UA.');
+ ev(1,T(1998,2,17),'Record','Cel mai îndepărtat obiect făcut de om','Depășește Pioneer 10 (≈69 UA).');
+ ev(1,V1.ts,'Șoc terminal','Șocul terminal','≈94 UA: vântul solar încetinește brusc.');
+ ev(1,V1.hp,'Heliopauză','Heliopauza','≈121,6 UA: prima sondă care intră în spațiul interstelar.');
+ ev(2,T(1977,8,20,14.4),'Lansare','Lansare','Lansată cu 16 zile înaintea lui Voyager 1, pe o traiectorie mai lentă.');
+ ev(2,T(1979,7,9,22),'Jupiter','Jupiter','≈570 000 km de centrul planetei.');
+ ev(2,T(1981,8,26,3),'Saturn','Saturn','≈101 000 km; asistență gravitațională spre Uranus.');
+ ev(2,T(1986,1,24,17.9),'Uranus','Uranus','≈81 500 km. Singura vizită a unei sonde.');
+ ev(2,T(1989,8,25,3.9),'Neptun','Neptun','≈4 950 km deasupra norilor; apoi Triton. Traiectoria coboară spre sud.');
+ ev(2,V2.ts,'Șoc terminal','Șocul terminal','≈84 UA.');
+ ev(2,V2.hp,'Heliopauză','Heliopauza','≈119 UA: a doua sondă în spațiul interstelar, cu instrumentul plasmatic funcțional.');
+ const e1=M.findEarth(V1,M.LD_AU);if(e1)ev(1,e1,'1 zi-lumină','1 zi-lumină de Pământ','Semnalul radio are nevoie de 24 de ore într-un sens. (Calcul din model; NASA anunță nov. 2026.)','key');
+ VOY.forEach(V=>{const t=M.findR(V,LD_AU);if(t)ev(V.id,t,'1 zi-lumină','1 zi-lumină de Soare','≈173 UA față de Soare (heliocentric).','key');});
+ ev(0,T(2033,1,1),'≈ anii 2030','Estimare: tăcerea radio','Generatorii cu plutoniu scad cu ≈4 W/an; instrumentele se sting pe rând, iar sondele rămân fără transmisie. Datare orientativă.','est');
+ [[1,1000,'Norul Oort','Intrare în Norul Oort interior','≈1 000 UA (peste ≈250 de ani).'],[1,2e4,'Oort exterior','Norul Oort exterior','≈20 000 UA.'],[1,M.LY_AU,'1 an-lumină','1 an-lumină de Soare','63 241 UA.'],[1,1e5,'Marginea Oort','Ieșirea din Norul Oort','≈100 000 UA; traversarea durează ≈30 000 de ani.']].forEach(a=>{const t=M.findR(V1,a[1]);if(t)ev(a[0],t,a[2],a[3],a[4]);});
+ [[2,1000,'Norul Oort','Intrare în Norul Oort interior','≈1 000 UA.'],[2,M.LY_AU,'1 an-lumină','1 an-lumină de Soare','63 241 UA.'],[2,1e5,'Marginea Oort','Ieșirea din Norul Oort','≈100 000 UA.']].forEach(a=>{const t=M.findR(V2,a[1]);if(t)ev(a[0],t,a[2],a[3],a[4]);});
+ [[1e6,'+1 milion de ani'],[1e7,'+10 milioane de ani'],[1e8,'+100 milioane de ani'],[1e9,'+1 miliard de ani']].forEach(a=>{ev(0,TAU0+a[0],a[1],a[1],'__dyn__','far');});
+})();
+EV.sort((a,b)=>a.t-b.t);
+function evPos(){EV.forEach(e=>{if(e.v===0){e.pos=null;e.pp=[M.voyPos(V1,e.t,!!S.opts.cor),M.voyPos(V2,e.t,!!S.opts.cor)];}else{e.pos=M.voyPos(VOY[e.v-1],e.t,!!S.opts.cor);}});}
+evPos();
+
+// ---------- proiecție ----------
+let AW=0,AH=0,CX=0,CY=0,K=1,F=[0,0,0],cyw=1,syw=0,cpt=1,spt=0,DPR=1,topH=48,ctlH=170,sideW=0;
+let compact=false,sheet=false,FS=1,lastKey='',minUser=null;
+function modeClasses(){const w=innerWidth,h=innerHeight;compact=Math.min(w,h)<=520;sheet=w<=820&&h>w*0.9;FS=compact?0.86:1;topH=compact?40:48;
+  const c=document.body.classList;c.toggle('compact',compact);c.toggle('sheet',sheet);
+  const wantMin=minUser!==null?minUser:(compact&&h<=640);$('ctl').classList.toggle('min',wantMin);$('bMore').textContent=wantMin?'▴':'▾';}
+function measure(){ctlH=$('ctl').offsetHeight;}
+function resize(){DPR=Math.min(2,window.devicePixelRatio||1);const w=innerWidth,h=innerHeight;cv.width=Math.round(w*DPR);cv.height=Math.round(h*DPR);ctx.setTransform(DPR,0,0,DPR,0,0);
+  modeClasses();document.documentElement.style.setProperty('--toph',topH+'px');measure();lastKey='';layout();}
+function layout(){const w=innerWidth,h=innerHeight;let sw=0,sh=0;
+  if(S.side){if(sheet)sh=Math.round((h-topH-ctlH)*(compact?0.42:0.46));else sw=compact?Math.min(360,Math.max(280,Math.round(w*0.38))):Math.min(360,Math.max(250,Math.round(w*0.3)));}
+  sideW=sw;AW=w-sw;AH=Math.max(100,h-ctlH-topH-sh);CX=AW/2;CY=topH+AH/2;
+  const key=[topH,ctlH,sw,sh].join();if(key!==lastKey){lastKey=key;const st=document.documentElement.style;
+    st.setProperty('--toph',topH+'px');st.setProperty('--ctlh',ctlH+'px');st.setProperty('--sidew',(sw||360)+'px');st.setProperty('--sheeth',sh+'px');}}
+function setView(){cyw=Math.cos(S.yaw);syw=Math.sin(S.yaw);cpt=Math.cos(S.pitch);spt=Math.sin(S.pitch);K=0.5*Math.min(AW,AH)/Math.pow(10,S.logW);}
+function proj(p){const x=p[0]-F[0],y=p[1]-F[1],z=p[2]-F[2],x1=x*cyw-y*syw,y1=x*syw+y*cyw,y2=y1*cpt-z*spt;return [CX+x1*K,CY-y2*K];}
+const inV=(q,m)=>q[0]>-m&&q[0]<innerWidth+m&&q[1]>-m&&q[1]<innerHeight+m;
+
+// ---------- desen ----------
+let P={v1:[0,0,0],v2:[0,0,0],planets:[]};
+let boxes=[];
+function label(txt,x,y,col,size,align){if(!S.opts.lab)return;const sz=(size||11)*FS;ctx.font=sz+'px system-ui,sans-serif';const w=ctx.measureText(txt).width,bx=align==='r'?x-w-4:x+4,by=y-sz;
+  for(const b of boxes){if(bx<b[0]+b[2]+2&&bx+w+2>b[0]&&by<b[1]+b[3]&&by+sz>b[1])return;}
+  boxes.push([bx,by,w,sz]);ctx.fillStyle=col||'#cfe0ff';ctx.textAlign=align==='r'?'right':'left';ctx.fillText(txt,align==='r'?x-4:x+4,y);}
+function ringPts(R,N,fn){const o=[];for(let i=0;i<=N;i++){const a=i/N*Math.PI*2;o.push(proj(fn?fn(a):[R*Math.cos(a),R*Math.sin(a),0]));}return o;}
+function clipSeg(x0,y0,x1,y1,xa,ya,xb,yb){let t0=0,t1=1;const dx=x1-x0,dy=y1-y0;
+  const P=[-dx,dx,-dy,dy],Q=[x0-xa,xb-x0,y0-ya,yb-y0];
+  for(let k=0;k<4;k++){if(P[k]===0){if(Q[k]<0)return null;}else{const r=Q[k]/P[k];if(P[k]<0){if(r>t1)return null;if(r>t0)t0=r;}else{if(r<t0)return null;if(r<t1)t1=r;}}}
+  return [x0+t0*dx,y0+t0*dy,x0+t1*dx,y0+t1*dy];}
+function strokePts(pts,col,lw,dash,alpha){const W=innerWidth,H=innerHeight,m=40;ctx.beginPath();let pen=false,px=0,py=0;
+  for(let i=1;i<pts.length;i++){const x0=pts[i-1][0],y0=pts[i-1][1],x1=pts[i][0],y1=pts[i][1];
+    if(!isFinite(x0+y0+x1+y1)){pen=false;continue;}
+    const c=clipSeg(x0,y0,x1,y1,-m,-m,W+m,H+m);if(!c){pen=false;continue;}
+    if(!pen||Math.abs(c[0]-px)>0.01||Math.abs(c[1]-py)>0.01)ctx.moveTo(c[0],c[1]);
+    ctx.lineTo(c[2],c[3]);px=c[2];py=c[3];pen=(c[2]===x1&&c[3]===y1);}
+  ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.globalAlpha=alpha==null?1:alpha;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1;}
+function ring(R,col,lw,dash,txt,alpha){const rpx=R*K;if(rpx<5||rpx>9000)return;
+  strokePts(ringPts(R,Math.min(200,Math.max(48,Math.round(rpx/3)))),col,lw,dash,alpha);
+  if(txt){const q=proj([R*Math.cos(0.8),R*Math.sin(0.8),0]);if(inV(q,0))label(txt,q[0],q[1],col,11);}}
+function sphere(R,col,lw,dash,txt,fill){const c=proj([0,0,0]),r=R*K;if(r<4||r>9000)return;ctx.beginPath();ctx.arc(c[0],c[1],r,0,6.2832);
+  if(fill){const g=ctx.createRadialGradient(c[0],c[1],r*0.2,c[0],c[1],r);g.addColorStop(0,'rgba(80,140,255,0)');g.addColorStop(1,fill);ctx.fillStyle=g;ctx.fill();}
+  ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([]);
+  if(txt&&c[1]-r>20)label(txt,c[0],c[1]-r-4,col,11);else if(txt)label(txt,c[0]+r*0.7,c[1]-r*0.7,col,11);}
+function glow(q,r,col){const g=ctx.createRadialGradient(q[0],q[1],0,q[0],q[1],r*4);g.addColorStop(0,col);g.addColorStop(0.3,col+'55');g.addColorStop(1,col+'00');ctx.fillStyle=g;ctx.beginPath();ctx.arc(q[0],q[1],r*4,0,6.2832);ctx.fill();}
+function setT(id,t){const e=$(id);if(e._t!==t){e._t=t;e.textContent=t;}}
+function bsearch(a,x){let lo=0,hi=a.length-1;while(lo<hi){const m=(lo+hi+1)>>1;if(a[m]<=x)lo=m;else hi=m-1;}return lo;}
+
+function drawPath(i){const V=VOY[i],pa=PATH[i],tau=S.tau,col=V.col;
+  const cur=i?P.v2:P.v1;
+  // trecut
+  let pts=[];const k=tau>=TAU0?pa.pts.length-1:bsearch(pa.pts,tau);
+  for(let j=0;j<=k;j++)pts.push(proj(pa.pps[j]));
+  if(tau>TAU0){const kk=bsearch(pa.fts,tau);pts.push(proj(pa.fps[0]));for(let j=1;j<=kk;j++)pts.push(proj(pa.fps[j]));}
+  if(tau>V.launch)pts.push(proj(cur));
+  if(pts.length>1)strokePts(pts,col,1.8,null,0.95);
+  if(S.opts.fut){const fp=[];const s0=tau>TAU0?bsearch(pa.fts,tau)+1:0;
+    fp.push(proj(cur));if(tau<TAU0){const kk=bsearch(pa.pts,tau)+1;for(let j=kk;j<pa.pts.length;j++)fp.push(proj(pa.pps[j]));}
+    for(let j=s0;j<pa.fts.length;j++)fp.push(proj(pa.fps[j]));if(fp.length>1)strokePts(fp,col,1.2,[3,5],0.55);}}
+
+function draw(){
+  boxes=[];ctx.setTransform(DPR,0,0,DPR,0,0);const w=innerWidth,h=innerHeight;
+  const bg=ctx.createRadialGradient(CX,CY,0,CX,CY,Math.max(w,h)*0.8);bg.addColorStop(0,'#0b1020');bg.addColorStop(1,'#03050a');ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
+  for(const s of BG){ctx.globalAlpha=s[3];ctx.fillStyle='#cfe0ff';ctx.fillRect(s[0]*w,s[1]*h,s[2],s[2]);}ctx.globalAlpha=1;
+  const W=Math.pow(10,S.logW),O=S.opts;ctx.lineJoin='round';
+  if(O.lab&&O.lab!==0){ctx.font='bold '+(12*FS)+'px system-ui,sans-serif';[[V1,P.v1],[V2,P.v2]].forEach(a=>{if(S.tau<a[0].launch-0.01)return;const q=proj(a[1]),t=(compact?'V'+a[0].id:a[0].name)+' · '+fmtDist(M.norm(a[1])),tw=ctx.measureText(t).width;boxes.push([q[0]+6,q[1]-7-12*FS,tw+6,12*FS+6]);});}
+  // galaxie
+  if(O.gal&&W>1.2e8)drawGalaxy(W);
+  // Norul Oort
+  if(O.oort&&W>800){const a=Math.min(0.55,0.25+0.1*Math.log10(W/800));ctx.fillStyle='rgba(170,200,255,'+a+')';
+    for(const q of OORT){const p=proj(q);if(p[0]>0&&p[0]<w&&p[1]>0&&p[1]<h)ctx.fillRect(p[0],p[1],1.3,1.3);}
+    sphere(2000,'rgba(150,190,255,.35)',1,[2,4],'Oort interior · 2 000 UA');sphere(1e5,'rgba(150,190,255,.5)',1,[2,4],'Marginea Norului Oort · ≈100 000 UA');}
+  // heliosferă
+  if(O.hel){sphere(121,'rgba(110,190,255,.75)',1.2,null,'Heliopauză',W<2000?'rgba(80,140,255,.10)':null);sphere(90,'rgba(255,170,90,.6)',1,[4,3],'Șoc terminal');}
+  // cercuri de distanță
+  if(O.ring){[[7.2,'1 oră-lumină',0],[LD_AU,'1 zi-lumină',1],[1212,'1 săpt.-lumină',0],[5271,'1 lună-lumină',0],[LY_AU,'1 an-lumină',1],[LY_AU*10,'10 a.l.',0],[LY_AU*100,'100 a.l.',0],[LY_AU*1e3,'1 000 a.l.',0],[LY_AU*1e4,'10 000 a.l.',0],[LY_AU*1e5,'100 000 a.l.',0]].forEach(r=>{
+    ring(r[0],r[2]?'rgba(255,230,140,.85)':'rgba(180,200,240,.38)',r[2]?1.4:0.8,r[2]?[6,4]:[2,5],r[1]);});}
+  // planete
+  const showOrb=O.orb;
+  for(let i=0;i<8;i++){const a=EL[i][1];if(a*K<1.6)continue;
+    if(showOrb)strokePts(ORB[i].map(proj),'rgba(150,175,215,.28)',0.8);
+    const q=proj(P.planets[i]);ctx.fillStyle=PCOL[i];ctx.beginPath();ctx.arc(q[0],q[1],Math.max(1.6,Math.min(PRAD[i],a*K*0.25+1.4)),0,6.2832);ctx.fill();
+    if(a*K>10)label(EL[i][0],q[0],q[1]-6,'#b8c8e6',11);}
+  // Soare
+  {const q=proj([0,0,0]);glow(q,4,'#ffd27a');ctx.fillStyle='#fff3c8';ctx.beginPath();ctx.arc(q[0],q[1],3,0,6.2832);ctx.fill();if(W<5e5)label('Soarele',q[0],q[1]-8,'#ffe6a8',11);}
+  // stele
+  if(O.star){for(const st of STARS){const p3=M.starPos(st,S.tau,!!O.cor),q=proj(p3);
+    const sp=st.speed*M.KMS;const T1=Math.min(4e5,Math.max(100,1.1*W/Math.max(0.05,sp)));
+    if(Math.max(Math.abs(q[0]-CX),Math.abs(q[1]-CY))<Math.max(AW,AH)*(1+ (T1*sp*K)/Math.max(AW,AH))+50){
+      const tr=[];for(let j=-12;j<=12;j++)tr.push(proj(M.starPos(st,S.tau+j/12*T1,!!O.cor)));strokePts(tr,st.col,0.7,[1,4],0.5);}
+    if(inV(q,10)){ctx.fillStyle=st.col;ctx.beginPath();ctx.arc(q[0],q[1],2.6,0,6.2832);ctx.fill();
+      const dly=M.norm(p3)/LY_AU;label(st.name+' · '+nf(dly,dly<10?2:1)+' a.l.',q[0],q[1]-6,st.col,11);}}}
+  // traseele
+  drawPath(0);drawPath(1);
+  // evenimente
+  EV.forEach(e=>{const ps=e.v===0?e.pp:[e.pos];ps.forEach((p3,pi)=>{if(!p3)return;const q=proj(p3);if(!inV(q,0))return;const V=e.v?VOY[e.v-1]:VOY[pi];
+    const passed=S.tau>=e.t;if(e.kind==='est'||e.kind==='far'){if(!(S.opts.lab))return;}
+    ctx.strokeStyle=V.col;ctx.lineWidth=1.3;ctx.fillStyle=passed?V.col:'rgba(4,6,12,.9)';ctx.beginPath();ctx.moveTo(q[0],q[1]-4);ctx.lineTo(q[0]+4,q[1]);ctx.lineTo(q[0],q[1]+4);ctx.lineTo(q[0]-4,q[1]);ctx.closePath();ctx.fill();ctx.stroke();
+    if(!(compact&&(e.kind===''||e.kind==='est')&&W>120))label(e.lab,q[0]+2,q[1]+14,V.col,10,'l');});});
+  if(P.showNow){[[V1,P.n1],[V2,P.n2]].forEach(a=>{const q=proj(a[1]);if(!inV(q,0))return;ctx.strokeStyle=a[0].col;ctx.lineWidth=1.2;ctx.setLineDash([2,2]);ctx.beginPath();ctx.arc(q[0],q[1],5,0,6.2832);ctx.stroke();ctx.setLineDash([]);label('azi',q[0]+7,q[1]+12,a[0].col,10,'l');});}
+  // sonde
+  [[V1,P.v1],[V2,P.v2]].forEach(a=>{const V=a[0],q=proj(a[1]);if(S.tau<V.launch-0.01)return;glow(q,3.2,V.col);ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(q[0],q[1],3,0,6.2832);ctx.fill();
+    ctx.strokeStyle=V.col;ctx.lineWidth=1.6;ctx.beginPath();ctx.arc(q[0],q[1],6,0,6.2832);ctx.stroke();
+    if(S.opts.lab){ctx.font='bold '+(12*FS)+'px system-ui,sans-serif';ctx.fillStyle=V.col;ctx.textAlign='left';ctx.fillText((compact?'V'+V.id:V.name)+' · '+fmtDist(M.norm(a[1])),q[0]+9,q[1]-7);}});
+  // scară
+  const target=compact?80:110,AUn=target/K;const pw=Math.pow(10,Math.floor(Math.log10(AUn)));let nice=pw;[1,2,5,10].forEach(m=>{if(m*pw<=AUn)nice=m*pw;});
+  $('bar').style.width=(nice*K)+'px';setT('scaleTxt',compact?fmtDist(nice)+(nice>=2?' · '+fmtLT(nice):''):fmtDist(nice)+(nice>=2?' · lumina: '+fmtLT(nice):'')+'   |   rază vizibilă ≈ '+fmtDist(W));
+}
+function drawGalaxy(W){
+  const t=(S.tau-TAU0)*1e-6,cor=!!S.opts.cor,R0=M.R0_PC,Rd=M.DISK_PC;
+  const gc=M.hillToEcl(-R0,0,0,t,cor);
+  const disk=(R,col,lw,dash,fill)=>{const N=140,pts=[];for(let i=0;i<=N;i++){const a=i/N*6.2832;const gx=R*Math.cos(a),gy=R*Math.sin(a);
+      // cerc în planul galactic, centrat pe centrul galactic (coordonate co-rotative)
+      const p=M.hillToEcl(-R0+gx,gy,0,t,cor);pts.push(proj(p));}
+    ctx.beginPath();pts.forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]));if(fill){ctx.fillStyle=fill;ctx.fill();}ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([]);};
+  disk(Rd,'rgba(190,170,255,.55)',1.2,null,'rgba(120,100,200,.07)');disk(R0,'rgba(255,230,160,.45)',1,[5,5]);disk(3000,'rgba(255,220,160,.2)',1);
+  const q=proj(gc);ctx.fillStyle='rgba(255,220,150,.9)';ctx.beginPath();ctx.arc(q[0],q[1],5,0,6.2832);ctx.fill();
+  label('Centrul Galaxiei · ≈26 700 a.l.',q[0],q[1]-9,'#ffe0a0',12);
+  const e=proj(M.hillToEcl(-R0+Rd,0,0,t,cor));label('Marginea discului galactic (schematic)',e[0],e[1]-6,'#c9b8ff',11);
+  const orb=proj(M.hillToEcl(-R0+R0,0,0,t,cor));void orb;}
+
+// ---------- telemetrie ----------
+function raDec(p){const q=M.ecl2eq(p),r=M.norm(q);let ra=Math.atan2(q[1],q[0])/D2R/15;if(ra<0)ra+=24;return {ra,dec:Math.asin(q[2]/r)/D2R};}
+function region(V,r,tau){
+  if(tau<V.launch)return 'La sol, pe Pământ';const e=V.enc;if(tau<e[0].t)return 'Spre '+['Jupiter'][0];
+  const names=['Jupiter','Saturn','Uranus','Neptun'];for(let i=0;i<e.length-1;i++)if(tau<e[i+1].t)return 'Între '+names[i]+' și '+names[i+1];
+  if(tau<V.ts)return r<50?'Dincolo de Neptun, în centura Kuiper':'Heliosfera externă';if(tau<V.hp)return 'Heliogaina (între șoc și heliopauză)';
+  if(r<1000)return 'Spațiu interstelar, imediat după heliopauză';if(r<2e4)return 'Norul Oort interior';if(r<1e5)return 'Norul Oort exterior';
+  if(r<3e6)return 'Spațiu interstelar, în vecinătatea Soarelui';if(r<2e7)return 'Vecinătatea stelară (Bula Locală)';if(r<2e8)return 'Brațul Orion al Căii Lactee';
+  if(r<3e9)return 'Discul Căii Lactee';return 'Scară galactică';}
+function status(tau){if(tau<TAU0)return 'în misiune';if(tau<M.T(2033,1,1))return 'în misiune (instrumente reduse, estimare)';return 'tăcută — doar călătorește (estimare)';}
+const dl=(k,v)=>'<dt>'+k+'</dt><dd>'+v+'</dd>';
+function updTel(){
+  [[V1,P.v1,'d1'],[V2,P.v2,'d2']].forEach(a=>{const V=a[0],p=a[1],r=M.norm(p),sp=S.tau<V.launch?0:M.voySpeed(V,S.tau),rd=raDec(p),earth=M.norm(M.sub(p,M.planetPos(2,S.tau)));
+    let near='',nd=1e30;STARS.forEach(s=>{const d=M.norm(M.sub(p,M.starPos(s,S.tau,!!S.opts.cor)));if(d<nd){nd=d;near=s.name;}});
+    $(a[2]).innerHTML=dl('Stare',status(S.tau))+dl('Regiune',region(V,r,S.tau))+dl('Distanță de Soare',fmtDist(r)+(r>1e4?'':' = '+nf(r*AU_KM/1e9,2)+' mld. km'))+
+      dl('Distanță de Pământ',fmtDist(earth))+dl('Semnal radio (dus)',fmtLT(earth))+dl('Viteză față de Soare',nf(sp,2)+' km/s')+
+      dl('Direcție (AD / Dec)',fmtHM(rd.ra)+' / '+nf(rd.dec,1)+'°')+dl('Vârstă de la lansare',S.tau<V.launch?'—':fmtYears(S.tau-V.launch))+dl('Cea mai apropiată stea din catalog',near+' · '+fmtDist(nd));});
+  const near=STARS.map(s=>({n:s.name,d:M.norm(M.starPos(s,S.tau,!!S.opts.cor))})).sort((a,b)=>a.d-b.d).slice(0,8);
+  $('nearNow').innerHTML='<table>'+near.map(x=>'<tr><td>'+x.n+'</td><td class="r">'+fmtDist(x.d)+'</td></tr>').join('')+'</table>';}
+
+// ---------- evenimente (listă) ----------
+let evF=0;
+function renderEv(){const L=$('evList');L.innerHTML='';EV.filter(e=>evF===0||e.v===evF||e.v===0).forEach(e=>{const d=document.createElement('div');d.className='ev';
+  const cols=e.v===0?'linear-gradient(90deg,var(--v1),var(--v2))':(e.v===1?'var(--v1)':'var(--v2)');
+  let txt=e.txt;if(txt==='__dyn__'){const r1=M.norm(e.pp[0]),r2=M.norm(e.pp[1]);txt='V1 la '+fmtDist(r1)+' de Soare; V2 la '+fmtDist(r2)+' (model liniar + dinamică galactică locală).';}
+  d.innerHTML='<div class="d"><span class="dot" style="background:'+cols+'"></span>'+(e.v?VOY[e.v-1].name:'Ambele sonde')+' · '+fmtDate(e.t)+' · '+relNow(e.t)+'</div><div class="t">'+e.title+'</div><div class="x">'+txt+'</div>';
+  d.onclick=()=>{S.tau=e.t;setPlay(false);syncUI();if(sheet){S.side=false;applySide();}};L.appendChild(d);});}
+
+// ---------- apropieri de stele ----------
+function computeApproaches(){
+  const out=[];VOY.forEach(V=>{const arr=STARS.map(s=>{const c=M.closest(V,s,2.5e6);return {s,t:c.t,d:c.d};}).sort((a,b)=>a.d-b.d).slice(0,5);out.push(arr);});
+  let html='';
+  out.forEach((arr,i)=>{html+='<div class="card"><h3 style="color:'+VOY[i].col+'">'+VOY[i].name+'</h3><table><tr><th>Stea</th><th>Când</th><th class="r">Distanță</th></tr>'+
+    arr.map((x,j)=>'<tr><td><a href="#" data-t="'+x.t+'" style="color:#cfe0ff">'+x.s.name+'</a></td><td>'+fmtDate(x.t)+'</td><td class="r">'+nf(x.d/LY_AU,2)+' a.l.</td></tr>').join('')+'</table></div>';
+    arr.slice(0,2).forEach(x=>{if(x.d/LY_AU<6)ev(VOY[i].id,x.t,'→ '+x.s.name,'Cea mai mică distanță față de '+x.s.name,'≈'+nf(x.d/LY_AU,2)+' a.l. între sondă și stea (model, valori aproximative ale catalogului).','star');});});
+  const LIT=[[V1,'Gliese 445',1.6,40000],[V2,'Ross 248',1.7,42000],[V2,'Sirius',4.3,296000]];
+  html+='<h4>Literatură față de model</h4><table><tr><th>Sondă · stea</th><th class="r">Literatură</th><th class="r">Model</th></tr>'+LIT.map(x=>{const s=STARS.find(q=>q.name===x[1]),c=M.closest(x[0],s,1.2e6);
+    return '<tr><td>'+x[0].name.replace('Voyager ','V')+' · '+x[1]+'</td><td class="r">≈'+nf(x[2],1)+' a.l. · ~'+nf(x[3],0)+' ani</td><td class="r">'+nf(c.d/LY_AU,1)+' a.l. · +'+nf(Math.round((c.t-TAU0)/100)*100,0)+' ani</td></tr>';}).join('')+'</table><div class="small">Literatura: NASA/JPL, prin Wikipedia. Pe distanțe de ani-lumină, o abatere de câteva grade în direcția vitezei unei sonde schimbă distanța minimă cu zecimi de an-lumină sau mai mult (la Sirius, peste doi ani-lumină), așa că valorile modelului sunt orientative.</div>';
+  $('appr').innerHTML=html;$('appr').querySelectorAll('a').forEach(a=>a.onclick=ev=>{ev.preventDefault();S.tau=parseFloat(a.dataset.t);setPlay(false);syncUI();});
+  EV.sort((a,b)=>a.t-b.t);evPos();renderEv();}
+
+// ---------- „Despre” ----------
+$('p-about').innerHTML='<h4>Ce arată aplicația</h4><p>Traseul celor două sonde Voyager din 1977 până într-un viitor de până la 1 miliard de ani, la orice scară: de la orbita Pământului la discul Căii Lactee. Cercul de 1 zi-lumină (≈173 UA) este reperul spre care se îndreaptă Voyager 1 în 2026–2027.</p>'+
+ '<h4>Cum e calculat</h4><p><b>Planetele:</b> elemente orbitale kepleriene medii (JPL, valabile 1800–2050). <b>Până la 5 nov. 2026:</b> arce balistice (conice heliocentrice, problema Lambert) de la lansare la fiecare planetă, la datele reale ale zborurilor; asistențele gravitaționale apar ca schimbări bruște de viteză la planetă. Apoi o dreaptă cu frânare gravitațională solară, calibrată să ajungă în poziția din 5 nov. 2026. <b>După 2026:</b> mișcare inerțială plus corecția Soarelui, iar pe timp lung atracția Galaxiei prin ecuațiile epiciclice (Hill) cu constantele Oort A=15,3 și B=−11,9 km/s/kpc și frecvența verticală ≈0,08 rad/Mil. ani. <b>Stelele:</b> poziții J2000, paralaxă, mișcare proprie și viteză radială aproximative, propagate cu aceeași dinamică.</p>'+
+ '<h4>Limite</h4><p>Pozițiile din 2026 (distanță, direcție) sunt aproximări; la scară de ani-lumină apar diferențe față de efemeridele JPL. Fără atracția altor corpuri și fără corecții de traiectorie; zborurile pe lângă planete sunt tratate ca puncte (conice îmbinate). Modelul galactic este o liniarizare în jurul orbitei Soarelui: precis pe zeci de milioane de ani, orientativ de la sute de milioane de ani în sus, când sondele ajung la kiloparseci de Soare. Datările despre sfârșitul transmisiei sunt estimări, nu predicții oficiale.</p>'+
+ '<h4>Data curentă</h4><p>La pornire aplicația se sincronizează cu ceasul dispozitivului (modul „Timp real”): datele relative („acum”, „peste”) și marcajul „azi” de pe traseu se raportează la ziua de azi. Poziția sondelor se extrapolează din ultima poziție calibrată (5 nov. 2026), valabilă pentru orice dată ulterioară; butonul „Acum” revine oricând la timp real.</p><h4>Un moment anume</h4><p>Butonul „📅 Dată” deschide o fereastră în care poți alege o dată calendaristică exactă (oră în UTC, de la lansări până la +1 miliard de ani), un interval față de azi („peste 250 de ani”, „acum 10 ani”) sau un moment rapid. După alegere, „Redare” continuă de acolo, cu 1 an pe secundă. Adresa paginii primește un marcaj <b>#t=</b> care poate fi salvat sau trimis.</p><h4>Comenzi</h4><p>Trage pe ecran pentru a roti, rotița / ciupirea pentru zoom (oprește zoomul automat), dublu-clic pentru a reseta unghiul. Spațiu = redare / pauză. Cadrul „co-rotativ” arată traseul în sistemul care se învârte odată cu Galaxia.</p>'+
+ '<h4>Discul de Aur</h4><p>Fiecare sondă poartă un disc de cupru placat cu aur, cu sunete și imagini de pe Pământ, ca mesaj pentru o eventuală descoperire în viitorul foarte îndepărtat.</p>'+
+ '<p class="small">Sursa datelor misiunii: NASA/JPL. Aplicație cu un singur fișier, funcționează fără internet.</p>';
+
+// ---------- UI ----------
+function applySide(){$('side').classList.toggle('hide',!S.side);$('bSide').classList.toggle('on',S.side);layout();}
+function syncUI(){$('tSl').value=pOfTau(S.tau);$('zSl').value=S.logW;}
+function setPlay(b){S.play=b;$('bPlay').innerHTML=(b?'⏸':'▶')+'<span class="lbl"> '+(b?'Pauză':'Redare')+'</span>';$('bPlay').classList.toggle('on',b);}
+$('bPlay').onclick=()=>{if(!S.play&&S.tau>=TMAX-1)S.tau=TMIN;setPlay(!S.play);};
+$('bStart').onclick=()=>{S.tau=TMIN;setPlay(false);syncUI();};
+$('bNow').onclick=()=>{selRate.value=0;S.mode='live';S.tau=clampT(nowTau());setPlay(true);syncUI();clearHash();};
+selRate.onchange=()=>{const r=RATES[selRate.value];S.mode=(r[1]==='cine'||r[1]==='live')?r[1]:'rate';S.rate=r[2];if(S.mode==='live')setPlay(true);};
+$('tSl').oninput=e=>{clearHash();if(S.play&&S.mode==='live')setPlay(false);S.tau=tauOfP(parseFloat(e.target.value));};
+$('zSl').oninput=e=>{S.logW=parseFloat(e.target.value);setAuto(false);};
+selZ.onchange=()=>{if(selZ.value===''){return;}const z=ZP[selZ.value];S.logW=Math.log10(z[1]);setAuto(false);selZ.value='';syncUI();};
+function setAuto(b){S.opts.auto=b?1:0;$('oAuto').checked=!!b;}
+$('bSide').onclick=()=>{S.side=!S.side;applySide();};
+$('bMore').onclick=()=>{minUser=!$('ctl').classList.contains('min');modeClasses();measure();layout();};
+$('bOpt').onclick=()=>{$('opt').classList.toggle('on');$('bOpt').classList.toggle('on');};
+const optMap={oOrb:'orb',oLab:'lab',oHel:'hel',oOort:'oort',oStar:'star',oRing:'ring',oFut:'fut',oGal:'gal',oAuto:'auto',oCor:'cor'};
+Object.keys(optMap).forEach(id=>{$(id).onchange=e=>{S.opts[optMap[id]]=e.target.checked?1:0;if(id==='oCor'){buildPaths();evPos();}};});
+$('selFocus').onchange=e=>{S.focus=e.target.value;};
+$('bReset').onclick=()=>{S.yaw=-0.5;S.pitch=0.55;};
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on',p.id==='p-'+b.dataset.t));});
+document.querySelectorAll('.chips button').forEach(b=>b.onclick=()=>{evF=parseInt(b.dataset.f);document.querySelectorAll('.chips button').forEach(x=>x.classList.toggle('on',x===b));renderEv();});
+addEventListener('keydown',e=>{if(e.code==='Space'&&!/INPUT|SELECT|BUTTON/.test(document.activeElement.tagName)){e.preventDefault();$('bPlay').click();}});
+// gesturi
+const ptrs=new Map();let pinch0=0,zoom0=0;
+cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);ptrs.set(e.pointerId,[e.clientX,e.clientY]);if(ptrs.size===2){const a=[...ptrs.values()];pinch0=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1]);zoom0=S.logW;}});
+cv.addEventListener('pointermove',e=>{const p=ptrs.get(e.pointerId);if(!p)return;
+  if(ptrs.size===1){S.yaw-=(e.clientX-p[0])*0.006;S.pitch=Math.max(-1.55,Math.min(1.55,S.pitch+(e.clientY-p[1])*0.006));p[0]=e.clientX;p[1]=e.clientY;}
+  else{p[0]=e.clientX;p[1]=e.clientY;const a=[...ptrs.values()],d=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1]);if(pinch0>0){S.logW=Math.max(-1.3,Math.min(10.5,zoom0-Math.log10(d/pinch0)));setAuto(false);}}});
+const up=e=>{ptrs.delete(e.pointerId);pinch0=0;};cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
+cv.addEventListener('wheel',e=>{e.preventDefault();S.logW=Math.max(-1.3,Math.min(10.5,S.logW+e.deltaY*0.0012));setAuto(false);},{passive:false});
+cv.addEventListener('dblclick',()=>{S.yaw=-0.5;S.pitch=0.55;});
+addEventListener('resize',resize);
+
+// ---------- mergi la un moment ----------
+const MONTHS=['ianuarie','februarie','martie','aprilie','mai','iunie','iulie','august','septembrie','octombrie','noiembrie','decembrie'];
+const gEl=$('goto'),gMo=$('gM');MONTHS.forEach((m,i)=>{const o=document.createElement('option');o.value=i+1;o.textContent=m;gMo.appendChild(o);});
+const pad2=n=>(n<10?'0':'')+n;
+function partsToTau(y,mo,d,H,Mi){
+  if(d<1||d>31)return null;if(y<1977)return -1e3;
+  if(y<=9999){const J=M.jd(y,mo,d,H+Mi/60),c=M.calFromJD(J);if(Math.floor(c.d)!==d||c.m!==mo)return null;return (J-2451545)/365.25;}
+  return (y-2000)+(mo-1)/12+(d-1)/365.25+(H+Mi/60)/8766;}
+function setHash(t){try{let s;if(t<=1000){const c=M.calFromJD(2451545+t*365.25);s=c.y+'-'+pad2(c.m)+'-'+pad2(Math.floor(c.d));}else s='y'+Math.round(2000+t);history.replaceState(null,'','#t='+s);}catch(e){}}
+function clearHash(){try{if(location.hash)history.replaceState(null,'',location.pathname+location.search);}catch(e){}}
+function parseHash(){try{const m=/^#t=(\d{4})-(\d{2})-(\d{2})$/.exec(location.hash);if(m){const J=M.jd(+m[1],+m[2],+m[3],12),c=M.calFromJD(J);if(+m[1]<1583||c.y!==+m[1]||c.m!==+m[2]||Math.floor(c.d)!==+m[3])return null;return (J-2451545)/365.25;}
+  const k=/^#t=y(\d{1,10})$/.exec(location.hash);if(k)return +k[1]-2000;}catch(e){}return null;}
+function gMsg(t,bad){const e=$('gMsg');e.textContent=t||'';e.style.color=bad?'#ff9d8a':'';}
+function openGo(){const t=S.tau;let y,mo=1,d=1,H=12,Mi=0;
+  if(t<=1000){const c=M.calFromJD(2451545+t*365.25);y=c.y;mo=c.m;d=Math.floor(c.d);H=Math.floor(c.h);Mi=Math.floor((c.h-H)*60);}else y=Math.round(2000+t);
+  $('gD').value=d;gMo.value=mo;$('gY').value=y;$('gH').value=pad2(H)+':'+pad2(Mi);gMsg('');gEl.classList.add('on');gGo_prev=document.activeElement;
+  if(!matchMedia('(pointer:coarse)').matches)$('gY').focus();}
+function closeGo(){if(!gEl.classList.contains('on'))return;gEl.classList.remove('on');try{(gGo_prev||$('bGo')).focus();}catch(e){}}
+function goTo(tau){gMsg('');if(!isFinite(tau)){gMsg('Valoare invalidă.',1);return;}let t=tau,note='';
+  if(t<TMIN){t=TMIN;note='Înainte de lansări nu există sonde — am ales momentul lansărilor.';}else if(t>TMAX){t=TMAX;note='Am ales limita simulării: +1 miliard de ani.';}
+  setPlay(false);if(S.mode==='live'){selRate.value=5;S.mode='rate';S.rate=1;}
+  S.tau=t;syncUI();setHash(t);if(note)gMsg(note);else closeGo();}
+function goDate(){const d=parseInt($('gD').value),mo=parseInt(gMo.value),y=parseInt($('gY').value),hm=($('gH').value||'12:00').split(':'),H=+hm[0]||0,Mi=+hm[1]||0;
+  if(!isFinite(d)||!isFinite(y)||y<1){gMsg('Completează ziua și anul.',1);return;}
+  const t=partsToTau(y,mo,d,H,Mi);if(t===null){gMsg('Data nu există (verifică ziua și luna).',1);return;}goTo(t);}
+function goRel(){const n=parseFloat($('gN').value);if(!isFinite(n)||n<0){gMsg('Introdu un număr pozitiv.',1);return;}goTo(nowTau()+parseInt($('gS').value)*n*parseFloat($('gU').value));}
+const aria=(id,t)=>$(id).setAttribute('aria-label',t);
+aria('bStart','Înapoi la lansare');aria('bGo','Mergi la un moment anume');aria('bMore','Restrânge sau extinde comenzile');aria('tSl','Timp: de la lansare până la un miliard de ani');aria('zSl','Scara vederii');aria('selRate','Viteza timpului');aria('selZ','Salt la o scară');aria('bNow','Acum, timp real');
+let gGo_prev=null;
+$('bGo').onclick=openGo;$('gX').onclick=closeGo;gEl.addEventListener('click',e=>{if(e.target===gEl)closeGo();});
+$('gGo').onclick=goDate;$('gGo2').onclick=goRel;
+['gD','gY','gH'].forEach(i=>$(i).addEventListener('keydown',e=>{if(e.key==='Enter')goDate();}));$('gN').addEventListener('keydown',e=>{if(e.key==='Enter')goRel();});
+addEventListener('keydown',e=>{if(e.key==='Escape')closeGo();
+  if(e.key==='Tab'&&gEl.classList.contains('on')){const f=[...gEl.querySelectorAll('button,input,select')].filter(x=>x.offsetParent!==null);if(!f.length)return;const a=f[0],z=f[f.length-1];
+    if(!gEl.contains(document.activeElement)){e.preventDefault();a.focus();}else if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus();}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus();}}});
+[['Lansare V2',()=>V2.launch],['Lansare V1',()=>V1.launch],['Jupiter · V1',()=>M.T(1979,3,5,12.1)],['Pale Blue Dot',()=>M.T(1990,2,14)],['Heliopauză V1',()=>V1.hp],['Heliopauză V2',()=>V2.hp],['Azi',()=>nowTau()],['Peste 100 de ani',()=>nowTau()+100],['Anul 5 000',()=>3000],['Anul 40 000',()=>38000],['Peste 1 mil. ani',()=>nowTau()+1e6],['Peste 1 mld. ani',()=>TMAX]].forEach(c=>{
+  const b=document.createElement('button');b.textContent=c[0];b.onclick=()=>goTo(c[1]());$('gChips').appendChild(b);});
+// ---------- bucla principală ----------
+let last=performance.now(),telT=0,uiT=0;
+function frame(ts){const dt=Math.min(0.1,(ts-last)/1000);last=ts;
+  if(S.play){if(S.mode==='live'){S.tau=clampT(nowTau());}else if(S.mode==='cine'){let p=pOfTau(S.tau)+7*dt;if(p>=1000){p=1000;setPlay(false);}S.tau=tauOfP(p);}
+    else{S.tau+=S.rate*dt;if(S.tau>=TMAX){S.tau=TMAX;setPlay(false);}}}
+  const cor=!!S.opts.cor;P.v1=M.voyPos(V1,S.tau,cor);P.v2=M.voyPos(V2,S.tau,cor);{const nt=nowTau();P.showNow=Math.abs(S.tau-nt)>0.003;if(P.showNow){P.n1=M.voyPos(V1,nt,cor);P.n2=M.voyPos(V2,nt,cor);}}P.planets=[];for(let i=0;i<8;i++)P.planets.push(M.planetPos(i,S.tau));
+  F=S.focus==='v1'?P.v1:S.focus==='v2'?P.v2:S.focus==='mid'?[(P.v1[0]+P.v2[0])/2,(P.v1[1]+P.v2[1])/2,(P.v1[2]+P.v2[2])/2]:[0,0,0];
+  if(S.opts.auto){const d=a=>M.norm(M.sub(a,F));let R=Math.max(d(P.v1),d(P.v2),d([0,0,0]));R=Math.max(R,1.8);const tgt=Math.log10(R*(compact?1.2:1.45));S.logW+=(tgt-S.logW)*(1-Math.exp(-dt*4));}
+  layout();setView();draw();
+  setT('dateBig',S.play&&S.mode==='live'?new Date().toLocaleString('ro-RO',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):fmtDate(S.tau));setT('dateSub',fmtDateSub(S.tau));
+  setT('tLabel',S.mode==='cine'?'ritm cinematic':S.mode==='live'&&S.play?'timp real':'');
+  uiT+=dt;if(uiT>0.1){uiT=0;if(document.activeElement!==$('tSl'))$('tSl').value=pOfTau(S.tau);if(document.activeElement!==$('zSl'))$('zSl').value=S.logW;}
+  telT+=dt;if(telT>0.2){telT=0;updTel();}
+  requestAnimationFrame(frame);}
+modeClasses();S.side=!compact&&!sheet;
+resize();applySide();S.mode='live';S.tau=clampT(nowTau());const hp=parseHash();if(hp!==null){S.tau=clampT(hp);S.mode='rate';S.rate=1;selRate.value=5;}
+renderEv();syncUI();updTel();setPlay(hp===null);
+$('tLabel').textContent='';
+requestAnimationFrame(frame);
+setTimeout(computeApproaches,400);
+})();
+</script>
+</body>
+</html>
