@@ -17,7 +17,7 @@ Versión: 1.1.0 · Última actualización: 2026-11-06
 
 ## Uso
 
-Abre `index.html` en un navegador moderno — sin instalación ni red. En línea: https://chiuta.github.io/voiajor/
+Abre `index.html` en un navegador moderno — sin instalación ni red. En línea: https://voiajor.chiuta.ro/
 
 ## Precisión y límites
 

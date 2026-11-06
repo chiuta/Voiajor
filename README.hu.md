@@ -17,7 +17,7 @@ Verzió: 1.1.0 · Utolsó frissítés: 2026-11-06
 
 ## Használat
 
-Nyisd meg az `index.html` fájlt egy modern böngészőben — telepítés és hálózat nélkül. Online: https://chiuta.github.io/voiajor/
+Nyisd meg az `index.html` fájlt egy modern böngészőben — telepítés és hálózat nélkül. Online: https://voiajor.chiuta.ro/
 
 ## Pontosság és korlátok
 

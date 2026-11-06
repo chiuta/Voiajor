@@ -17,7 +17,7 @@ Versiune: 1.1.0 · Ultima actualizare: 2026-11-06
 
 ## Utilizare
 
-Deschide `index.html` în orice browser modern — fără instalare, fără rețea. Online: https://chiuta.github.io/voiajor/
+Deschide `index.html` în orice browser modern — fără instalare, fără rețea. Online: https://voiajor.chiuta.ro/
 
 ## Precizie și limite
 

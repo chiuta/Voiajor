@@ -17,7 +17,7 @@ Version: 1.1.0 · Letzte Aktualisierung: 2026-11-06
 
 ## Nutzung
 
-`index.html` in einem aktuellen Browser öffnen — ohne Installation und ohne Netzwerk. Online: https://chiuta.github.io/voiajor/
+`index.html` in einem aktuellen Browser öffnen — ohne Installation und ohne Netzwerk. Online: https://voiajor.chiuta.ro/
 
 ## Genauigkeit und Grenzen
 
