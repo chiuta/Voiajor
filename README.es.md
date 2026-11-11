@@ -4,7 +4,7 @@
 
 Simulación interactiva de las trayectorias de Voyager 1 y 2 — desde el lanzamiento en 1977 hasta dentro de mil millones de años, de los planetas a la Vía Láctea.
 
-Versión: 1.1.3 · Última actualización: 2026-11-10
+Versión: 1.1.4 · Última actualización: 2026-11-10
 
 ## Qué hace
 

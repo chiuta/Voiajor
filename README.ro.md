@@ -4,7 +4,7 @@
 
 Simulare interactivă a traseelor Voyager 1 și 2 — de la lansarea din 1977 până peste un miliard de ani, de la planete până în Calea Lactee.
 
-Versiune: 1.1.3 · Ultima actualizare: 2026-11-10
+Versiune: 1.1.4 · Ultima actualizare: 2026-11-10
 
 ## Ce face
 
