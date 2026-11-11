@@ -4,7 +4,7 @@
 
 Simulazione interattiva delle traiettorie di Voyager 1 e 2 — dal lancio del 1977 a un miliardo di anni nel futuro, dai pianeti alla Via Lattea.
 
-Versione: 1.1.4 · Ultimo aggiornamento: 2026-11-10
+Versione: 1.1.5 · Ultimo aggiornamento: 2026-11-10
 
 ## Cosa fa
 
