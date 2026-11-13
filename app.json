@@ -2,8 +2,8 @@
   "schema": 1,
   "slug": "voiajor",
   "name": "VOIAJOR — Voyager 1 și 2, de la lansare în viitorul îndepărtat",
-  "version": "1.1.5",
-  "updated": "2026-11-11",
+  "version": "1.1.6",
+  "updated": "2026-11-13",
   "description": "Simulare detaliată a traseului sondelor Voyager 1 și 2, din 1977 până peste un miliard de ani, la orice scară.",
   "egress": [],
   "permissions": [
@@ -12,8 +12,8 @@
   "storageKeys": [
     "voiajor.lang"
   ],
-  "sizeBytes": 351941,
-  "sha256": "2c8ed8ef84cbcd0aa4c37d47d82aa3bac9b7532993f042a80e05ac466380b77b",
+  "sizeBytes": 365518,
+  "sha256": "06ee3a7f6a479d419966b091c1a8481426ba194bc61eb2a829d2ec275a186533",
   "csp": {
     "present": true,
     "directives": {
@@ -51,18 +51,20 @@
       "dialog",
       "exit",
       "view",
+      "ux",
       "label",
       "bundle"
     ]
   },
   "kit": {
-    "version": "1.4.0",
+    "version": "1.5.0",
     "modules": [
       "core",
       "store",
       "dialog",
       "exit",
       "view",
+      "ux",
       "label",
       "bundle"
     ]
