@@ -217,7 +217,7 @@
  "ev.v2.hp": "≈119 UA : deuxième sonde dans l’espace interstellaire, avec un instrument à plasma en état de marche.",
  "ev.ld.l": "1 jour-lumière",
  "ev.ldE.t": "1 jour-lumière de la Terre",
- "ev.ldE.x": "Un signal radio met 24 heures dans un sens. La NASA a annoncé le jalon pour le 18 novembre 2026, 10 h 16 UTC ; mon modèle extrapole une date quelques jours plus tôt.",
+ "ev.ldE.x": "Un signal radio met 24 heures dans un sens. Le moment (18 novembre 2026, 10 h 16 UTC) est celui annoncé par la NASA, et le modèle y est calibré.",
  "ev.ldS.t": "1 jour-lumière du Soleil",
  "ev.ldS.x": "≈173 UA du Soleil (héliocentrique).",
  "ev.sil.l": "≈ années 2030",
@@ -287,7 +287,7 @@
  "ld.past": "Franchi il y a {0}",
  "ld.short": "1 jour-lumière dans {0}",
  "ld.pshort": "Voyager 1 a franchi 1 jour-lumière ✓",
- "ld.model": "Mon modèle extrapole le {0} ; les éphémérides officielles de la NASA donnent un jalon quelques jours plus tard.",
+ "ld.model": "Le modèle, calibré sur l’annonce de la NASA, donne : {0}.",
  "ld.go": "Aller à ce moment",
  "ld.ping": "Envoyer un signal radio",
  "ping.t": "Le signal a parcouru {0}…",
@@ -371,5 +371,13 @@
  "tour.15.t": "La Galaxie se défait",
  "tour.15.x": "À ~10¹⁹ ans, la Galaxie s’évapore et les sondes en sont expulsées. Le voyage dans le vide intergalactique commence, à la vitesse lente d’un fossile.",
  "tour.16.t": "La fin des temps",
- "tour.16.x": "À 10¹⁰⁰ ans, même les derniers trous noirs ont disparu. La simulation s’arrête ici — et, par hypothèse, Voyager reste le dernier messager d’un monde qui fut."
+ "tour.16.x": "À 10¹⁰⁰ ans, même les derniers trous noirs ont disparu. La simulation s’arrête ici — et, par hypothèse, Voyager reste le dernier messager d’un monde qui fut.",
+ "tour.u1.t": "Uranus (1986)",
+ "tour.u1.x": "Le 24 janvier 1986, Voyager 2 devient la première et seule sonde à visiter Uranus : elle découvre 10 nouvelles lunes et un champ magnétique étrangement incliné.",
+ "tour.u2.t": "Voyager 2 suit (2018)",
+ "tour.u2.x": "Le 5 novembre 2018, Voyager 2 franchit l’héliopause et entre dans l’espace interstellaire avec un instrument plasma fonctionnel : première fois qu’on voit cette frontière mesurée des deux côtés.",
+ "tour.u3.t": "Sirius (dans ~300 000 ans)",
+ "tour.u3.x": "Voyager 2 passe près de Sirius, l’étoile la plus brillante du ciel, à quelques années-lumière (la NASA cite ~4,3 al ; mon modèle donne ~6). Elle ne la visite pas — elle ne fait que la frôler.",
+ "tour.u4.t": "Un million d’années",
+ "tour.u4.x": "Dans un million d’années, le Soleil et ses voisins se sont dispersés dans le ciel ; les sondes sont des points perdus parmi les étoiles, à des dizaines d’al de leur point de départ."
 }

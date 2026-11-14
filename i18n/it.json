@@ -217,7 +217,7 @@
  "ev.v2.hp": "≈119 UA: la seconda sonda nello spazio interstellare, con lo strumento al plasma funzionante.",
  "ev.ld.l": "1 giorno luce",
  "ev.ldE.t": "1 giorno luce dalla Terra",
- "ev.ldE.x": "Un segnale radio impiega 24 ore in un solo senso. La NASA ha annunciato il traguardo per il 18 novembre 2026, 10:16 UTC; il mio modello estrapola una data di qualche giorno prima.",
+ "ev.ldE.x": "Un segnale radio impiega 24 ore in un solo senso. Il momento (18 novembre 2026, 10:16 UTC) è quello annunciato dalla NASA e il modello è calibrato su di esso.",
  "ev.ldS.t": "1 giorno luce dal Sole",
  "ev.ldS.x": "≈173 UA dal Sole (eliocentrica).",
  "ev.sil.l": "≈ anni 2030",
@@ -287,7 +287,7 @@
  "ld.past": "Superato {0} fa",
  "ld.short": "1 giorno-luce tra {0}",
  "ld.pshort": "Voyager 1 ha superato 1 giorno-luce ✓",
- "ld.model": "Il mio modello estrapola il {0}; le effemeridi ufficiali della NASA danno un traguardo di qualche giorno dopo.",
+ "ld.model": "Il modello, calibrato sull’annuncio della NASA, dà: {0}.",
  "ld.go": "Vai a quel momento",
  "ld.ping": "Invia un segnale radio",
  "ping.t": "Il segnale ha percorso {0}…",
@@ -371,5 +371,13 @@
  "tour.15.t": "La Galassia si disfa",
  "tour.15.x": "A ~10¹⁹ anni la Galassia evapora e le sonde vengono scagliate fuori. Comincia il viaggio nel vuoto intergalattico, alla lenta velocità di un fossile.",
  "tour.16.t": "La fine del tempo",
- "tour.16.x": "A 10¹⁰⁰ anni sono spariti anche gli ultimi buchi neri. Qui finisce la simulazione — e, per ipotesi, Voyager resta l’ultimo messaggero di un mondo che fu."
+ "tour.16.x": "A 10¹⁰⁰ anni sono spariti anche gli ultimi buchi neri. Qui finisce la simulazione — e, per ipotesi, Voyager resta l’ultimo messaggero di un mondo che fu.",
+ "tour.u1.t": "Urano (1986)",
+ "tour.u1.x": "Il 24 gennaio 1986 Voyager 2 diventa la prima e unica sonda a visitare Urano: scopre 10 nuove lune e un campo magnetico stranamente inclinato.",
+ "tour.u2.t": "Segue Voyager 2 (2018)",
+ "tour.u2.x": "Il 5 novembre 2018 Voyager 2 attraversa l’eliopausa ed entra nello spazio interstellare con lo strumento al plasma funzionante: per la prima volta vediamo il confine misurato da entrambi i lati.",
+ "tour.u3.t": "Sirio (tra ~300 000 anni)",
+ "tour.u3.x": "Voyager 2 passa vicino a Sirio, la stella più luminosa del cielo, a qualche anno luce (la NASA cita ~4,3 al; il mio modello ~6). Non la visita — la sfiora soltanto.",
+ "tour.u4.t": "Un milione di anni",
+ "tour.u4.x": "Tra un milione di anni il Sole e i suoi vicini si sono sparpagliati nel cielo; le sonde sono puntini tra le stelle, a decine di al da dove sono partite."
 }

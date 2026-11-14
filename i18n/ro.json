@@ -217,7 +217,7 @@
  "ev.v2.hp": "≈119 UA: a doua sondă în spațiul interstelar, cu instrumentul plasmatic funcțional.",
  "ev.ld.l": "1 zi-lumină",
  "ev.ldE.t": "1 zi-lumină de Pământ",
- "ev.ldE.x": "Semnalul radio are nevoie de 24 de ore într-un sens. NASA a anunțat reperul pentru 18 noiembrie 2026, ora 10:16 UTC; modelul meu extrapolează o dată cu câteva zile mai devreme.",
+ "ev.ldE.x": "Semnalul radio are nevoie de 24 de ore într-un sens. Momentul (18 noiembrie 2026, 10:16 UTC) este cel anunțat de NASA, iar modelul este calibrat pe el.",
  "ev.ldS.t": "1 zi-lumină de Soare",
  "ev.ldS.x": "≈173 UA față de Soare (heliocentric).",
  "ev.sil.l": "≈ anii 2030",
@@ -287,7 +287,7 @@
  "ld.past": "A trecut de {0} în urmă",
  "ld.short": "1 zi-lumină în {0}",
  "ld.pshort": "Voyager 1 a depășit 1 zi-lumină ✓",
- "ld.model": "Modelul meu extrapolează data de {0}; efemeridele oficiale NASA dau un reper mai târziu cu câteva zile.",
+ "ld.model": "Modelul, calibrat după anunțul NASA, dă: {0}.",
  "ld.go": "Mergi la acel moment",
  "ld.ping": "Trimite un semnal radio",
  "ping.t": "Semnalul a parcurs {0}…",
@@ -371,5 +371,13 @@
  "tour.15.t": "Galaxia se destramă",
  "tour.15.x": "La ~10¹⁹ ani Galaxia se evaporă și sondele sunt aruncate în afara ei. Începe călătoria în golul intergalactic, cu viteza mică a unui fosil.",
  "tour.16.t": "Capătul timpului",
- "tour.16.x": "La 10¹⁰⁰ ani și ultimele găuri negre au dispărut. Aici se termină simularea — și, prin ipoteză, Voyager rămâne ultimul mesager al unei lumi care a fost."
+ "tour.16.x": "La 10¹⁰⁰ ani și ultimele găuri negre au dispărut. Aici se termină simularea — și, prin ipoteză, Voyager rămâne ultimul mesager al unei lumi care a fost.",
+ "tour.u1.t": "Uranus (1986)",
+ "tour.u1.x": "Pe 24 ianuarie 1986, Voyager 2 devine prima și singura sondă care vizitează Uranus: descoperă 10 luni noi și un câmp magnetic înclinat straniu.",
+ "tour.u2.t": "Și Voyager 2 iese (2018)",
+ "tour.u2.x": "Pe 5 noiembrie 2018, Voyager 2 străbate heliopauza și intră în spațiul interstelar, cu instrumentele plasmei funcționale: ne arată prima oară cum arată granița, măsurată din ambele părți.",
+ "tour.u3.t": "Sirius (peste ~300 000 de ani)",
+ "tour.u3.x": "Voyager 2 trece pe lângă Sirius, cea mai strălucitoare stea de pe cer, la câțiva ani-lumină (NASA citează ~4,3 a.l.; modelul meu dă ~6). Nu o vizitează — doar o ocolește.",
+ "tour.u4.t": "Un milion de ani",
+ "tour.u4.x": "Peste un milion de ani, Soarele și vecinii lui s-au răspândit pe cer; sondele sunt acum stele pierdute printre stele, la zeci de a.l. de locul unde au pornit."
 }

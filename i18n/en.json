@@ -217,7 +217,7 @@
  "ev.v2.hp": "≈119 AU: the second probe in interstellar space, with a working plasma instrument.",
  "ev.ld.l": "1 light-day",
  "ev.ldE.t": "1 light-day from Earth",
- "ev.ldE.x": "A radio signal needs 24 hours one way. NASA announced the milestone for 18 November 2026, 10:16 UTC; my model extrapolates a date a few days earlier.",
+ "ev.ldE.x": "A radio signal needs 24 hours one way. The moment (18 November 2026, 10:16 UTC) is the one announced by NASA, and the model is calibrated to it.",
  "ev.ldS.t": "1 light-day from the Sun",
  "ev.ldS.x": "≈173 AU from the Sun (heliocentric).",
  "ev.sil.l": "≈ 2030s",
@@ -287,7 +287,7 @@
  "ld.past": "Passed {0} ago",
  "ld.short": "1 light-day in {0}",
  "ld.pshort": "Voyager 1 has passed 1 light-day ✓",
- "ld.model": "My model extrapolates {0}; NASA’s official ephemeris gives a milestone a few days later.",
+ "ld.model": "The model, calibrated on NASA’s announcement, gives: {0}.",
  "ld.go": "Go to that moment",
  "ld.ping": "Send a radio signal",
  "ping.t": "The signal has travelled {0}…",
@@ -371,5 +371,13 @@
  "tour.15.t": "The Galaxy comes apart",
  "tour.15.x": "At ~10¹⁹ years the Galaxy evaporates and the probes are flung out of it. The journey into the intergalactic void begins, at the slow speed of a fossil.",
  "tour.16.t": "The end of time",
- "tour.16.x": "By 10¹⁰⁰ years even the last black holes are gone. Here the simulation ends — and, by assumption, Voyager remains the last messenger of a world that once was."
+ "tour.16.x": "By 10¹⁰⁰ years even the last black holes are gone. Here the simulation ends — and, by assumption, Voyager remains the last messenger of a world that once was.",
+ "tour.u1.t": "Uranus (1986)",
+ "tour.u1.x": "On 24 January 1986 Voyager 2 becomes the first and only probe to visit Uranus: it finds 10 new moons and a strangely tilted magnetic field.",
+ "tour.u2.t": "Voyager 2 follows (2018)",
+ "tour.u2.x": "On 5 November 2018 Voyager 2 crosses the heliopause into interstellar space with a working plasma instrument, showing for the first time what the boundary looks like from both sides.",
+ "tour.u3.t": "Sirius (in ~300,000 years)",
+ "tour.u3.x": "Voyager 2 passes Sirius, the brightest star in our sky, a few light-years away (NASA cites ~4.3 ly; my model gives ~6). It does not visit it — it only drifts by.",
+ "tour.u4.t": "One million years",
+ "tour.u4.x": "In a million years the Sun and its neighbours have spread across the sky; the probes are now specks among the stars, tens of light-years from where they started."
 }

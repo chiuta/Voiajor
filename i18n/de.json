@@ -217,7 +217,7 @@
  "ev.v2.hp": "≈119 AE: Die zweite Sonde im interstellaren Raum, mit funktionierendem Plasmainstrument.",
  "ev.ld.l": "1 Lichttag",
  "ev.ldE.t": "1 Lichttag von der Erde",
- "ev.ldE.x": "Ein Funksignal braucht 24 Stunden in eine Richtung. Die NASA nannte den Meilenstein für den 18. November 2026, 10:16 UTC; mein Modell extrapoliert ein Datum einige Tage früher.",
+ "ev.ldE.x": "Ein Funksignal braucht 24 Stunden in eine Richtung. Der Zeitpunkt (18. November 2026, 10:16 UTC) ist der von der NASA angekündigte, und das Modell ist darauf kalibriert.",
  "ev.ldS.t": "1 Lichttag von der Sonne",
  "ev.ldS.x": "≈173 AE von der Sonne (heliozentrisch).",
  "ev.sil.l": "≈ 2030er",
@@ -287,7 +287,7 @@
  "ld.past": "Vor {0} überschritten",
  "ld.short": "1 Lichttag in {0}",
  "ld.pshort": "Voyager 1 hat 1 Lichttag überschritten ✓",
- "ld.model": "Mein Modell extrapoliert den {0}; die offiziellen NASA-Ephemeriden nennen einen Meilenstein einige Tage später.",
+ "ld.model": "Das Modell, auf die NASA-Ankündigung kalibriert, ergibt: {0}.",
  "ld.go": "Zu diesem Zeitpunkt",
  "ld.ping": "Funksignal senden",
  "ping.t": "Das Signal hat {0} zurückgelegt …",
@@ -371,5 +371,13 @@
  "tour.15.t": "Die Galaxis löst sich auf",
  "tour.15.x": "Bei ~10¹⁹ Jahren verdampft die Galaxis, und die Sonden werden hinausgeschleudert. Die Reise ins intergalaktische Nichts beginnt, mit der langsamen Geschwindigkeit eines Fossils.",
  "tour.16.t": "Das Ende der Zeit",
- "tour.16.x": "Bei 10¹⁰⁰ Jahren sind selbst die letzten Schwarzen Löcher verschwunden. Hier endet die Simulation — und per Annahme bleibt Voyager der letzte Bote einer Welt, die einmal war."
+ "tour.16.x": "Bei 10¹⁰⁰ Jahren sind selbst die letzten Schwarzen Löcher verschwunden. Hier endet die Simulation — und per Annahme bleibt Voyager der letzte Bote einer Welt, die einmal war.",
+ "tour.u1.t": "Uranus (1986)",
+ "tour.u1.x": "Am 24. Januar 1986 wird Voyager 2 zur ersten und einzigen Sonde am Uranus: Sie entdeckt 10 neue Monde und ein seltsam geneigtes Magnetfeld.",
+ "tour.u2.t": "Voyager 2 folgt (2018)",
+ "tour.u2.x": "Am 5. November 2018 durchquert Voyager 2 die Heliopause in den interstellaren Raum, mit funktionierendem Plasmainstrument: erstmals sieht man die Grenze von beiden Seiten gemessen.",
+ "tour.u3.t": "Sirius (in ~300 000 Jahren)",
+ "tour.u3.x": "Voyager 2 passiert Sirius, den hellsten Stern am Himmel, in wenigen Lichtjahren Abstand (NASA nennt ~4,3 Lj; mein Modell ~6). Sie besucht ihn nicht — sie zieht nur vorbei.",
+ "tour.u4.t": "Eine Million Jahre",
+ "tour.u4.x": "In einer Million Jahren haben sich die Sonne und ihre Nachbarn über den Himmel verteilt; die Sonden sind verlorene Punkte unter den Sternen, Dutzende Lj von ihrem Start entfernt."
 }

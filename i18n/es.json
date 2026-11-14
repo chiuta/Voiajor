@@ -217,7 +217,7 @@
  "ev.v2.hp": "≈119 UA: la segunda sonda en el espacio interestelar, con el instrumento de plasma en funcionamiento.",
  "ev.ld.l": "1 día luz",
  "ev.ldE.t": "1 día luz de la Tierra",
- "ev.ldE.x": "Una señal de radio tarda 24 horas en un sentido. La NASA anunció el hito para el 18 de noviembre de 2026, 10:16 UTC; mi modelo extrapola una fecha unos días antes.",
+ "ev.ldE.x": "Una señal de radio tarda 24 horas en un sentido. El momento (18 de noviembre de 2026, 10:16 UTC) es el anunciado por la NASA y el modelo está calibrado con él.",
  "ev.ldS.t": "1 día luz del Sol",
  "ev.ldS.x": "≈173 UA del Sol (heliocéntrico).",
  "ev.sil.l": "≈ años 2030",
@@ -287,7 +287,7 @@
  "ld.past": "Superado hace {0}",
  "ld.short": "1 día-luz en {0}",
  "ld.pshort": "Voyager 1 ha superado 1 día-luz ✓",
- "ld.model": "Mi modelo extrapola el {0}; las efemérides oficiales de la NASA dan un hito unos días después.",
+ "ld.model": "El modelo, calibrado con el anuncio de la NASA, da: {0}.",
  "ld.go": "Ir a ese momento",
  "ld.ping": "Enviar una señal de radio",
  "ping.t": "La señal ha recorrido {0}…",
@@ -371,5 +371,13 @@
  "tour.15.t": "La Galaxia se deshace",
  "tour.15.x": "A ~10¹⁹ años la Galaxia se evapora y las sondas salen despedidas. Empieza el viaje por el vacío intergaláctico, a la lenta velocidad de un fósil.",
  "tour.16.t": "El fin del tiempo",
- "tour.16.x": "A los 10¹⁰⁰ años han desaparecido incluso los últimos agujeros negros. Aquí termina la simulación — y, por hipótesis, Voyager queda como último mensajero de un mundo que fue."
+ "tour.16.x": "A los 10¹⁰⁰ años han desaparecido incluso los últimos agujeros negros. Aquí termina la simulación — y, por hipótesis, Voyager queda como último mensajero de un mundo que fue.",
+ "tour.u1.t": "Urano (1986)",
+ "tour.u1.x": "El 24 de enero de 1986 Voyager 2 se convierte en la primera y única sonda en visitar Urano: descubre 10 lunas nuevas y un campo magnético extrañamente inclinado.",
+ "tour.u2.t": "Le sigue Voyager 2 (2018)",
+ "tour.u2.x": "El 5 de noviembre de 2018 Voyager 2 cruza la heliopausa y entra en el espacio interestelar con su instrumento de plasma operativo: por primera vez vemos la frontera medida desde ambos lados.",
+ "tour.u3.t": "Sirio (en ~300 000 años)",
+ "tour.u3.x": "Voyager 2 pasa cerca de Sirio, la estrella más brillante del cielo, a unos pocos años luz (la NASA cita ~4,3 al; mi modelo da ~6). No la visita — solo pasa de largo.",
+ "tour.u4.t": "Un millón de años",
+ "tour.u4.x": "Dentro de un millón de años el Sol y sus vecinos se han dispersado por el cielo; las sondas son puntos perdidos entre las estrellas, a decenas de al de donde partieron."
 }

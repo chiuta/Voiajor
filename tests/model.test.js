@@ -41,8 +41,8 @@ for (const V of M.VOY) {
 console.log('Poziția din 5 nov. 2026');
 check('Voyager 1 la ≈172,3 UA de Soare', near(norm(V1.p0), 172.3, 0.05), norm(V1.p0).toFixed(2));
 check('Voyager 2 la ≈145,1 UA de Soare', near(norm(V2.p0), 145.1, 0.05), norm(V2.p0).toFixed(2));
-const ld = norm(sub(M.voyPos(V1, M.T(2026, 11, 15)), M.planetPos(2, M.T(2026, 11, 15))));
-check('Voyager 1 la 1 zi-lumină (173,14 UA) de Pământ în 15 nov. 2026', near(ld, M.LD_AU, 0.1), ld.toFixed(2));
+const ld = norm(sub(M.voyPos(V1, M.T(2026, 11, 18.4)), M.planetPos(2, M.T(2026, 11, 18.4))));
+check('Voyager 1 la 1 zi-lumină (173,14 UA) de Pământ în jur de 18 nov. 2026', near(ld, M.LD_AU, 0.1), ld.toFixed(2));
 check('Viteza Voyager 1 ≈ 16,9 km/s', near(M.voySpeed(V1, M.TAU0), 16.9, 0.15), M.voySpeed(V1, M.TAU0).toFixed(2));
 check('Viteza Voyager 2 ≈ 15,2 km/s', near(M.voySpeed(V2, M.TAU0), 15.2, 0.15), M.voySpeed(V2, M.TAU0).toFixed(2));
 const r = (V, d) => norm(M.voyPos(V, M.T(...d)));

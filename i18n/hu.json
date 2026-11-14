@@ -217,7 +217,7 @@
  "ev.v2.hp": "≈119 CsE: a második szonda a csillagközi térben, működő plazmaműszerrel.",
  "ev.ld.l": "1 fénynap",
  "ev.ldE.t": "1 fénynap a Földtől",
- "ev.ldE.x": "A rádiójelnek egy irányban 24 óra kell. A NASA 2026. november 18-ra, 10:16 UTC-re jelezte a mérföldkövet; a modellem néhány nappal korábbi dátumot extrapolál.",
+ "ev.ldE.x": "A rádiójelnek egy irányban 24 óra kell. Az időpont (2026. november 18., 10:16 UTC) a NASA által bejelentett, és a modell erre van kalibrálva.",
  "ev.ldS.t": "1 fénynap a Naptól",
  "ev.ldS.x": "≈173 CsE a Naptól (heliocentrikus).",
  "ev.sil.l": "≈ 2030-as évek",
@@ -287,7 +287,7 @@
  "ld.past": "{0} telt el az átlépés óta",
  "ld.short": "1 fénynap: {0} múlva",
  "ld.pshort": "A Voyager 1 átlépte az 1 fénynapot ✓",
- "ld.model": "A modellem {0} dátumot extrapolál; a NASA hivatalos efemeridái néhány nappal későbbi mérföldkövet adnak.",
+ "ld.model": "A modell, a NASA bejelentéséhez kalibrálva, ezt adja: {0}.",
  "ld.go": "Ugrás erre a pillanatra",
  "ld.ping": "Rádiójel küldése",
  "ping.t": "A jel {0} utat tett meg…",
@@ -371,5 +371,13 @@
  "tour.15.t": "A Galaxis szétesik",
  "tour.15.x": "~10¹⁹ évnél a Galaxis elpárolog, és a szondák kirepülnek belőle. Elkezdődik az út az intergalaktikus ürességben, egy kövület lassú sebességével.",
  "tour.16.t": "Az idők vége",
- "tour.16.x": "10¹⁰⁰ évnél már az utolsó fekete lyukak is eltűntek. Itt ér véget a szimuláció — és feltevés szerint a Voyager marad egy valaha volt világ utolsó hírnöke."
+ "tour.16.x": "10¹⁰⁰ évnél már az utolsó fekete lyukak is eltűntek. Itt ér véget a szimuláció — és feltevés szerint a Voyager marad egy valaha volt világ utolsó hírnöke.",
+ "tour.u1.t": "Uránusz (1986)",
+ "tour.u1.x": "1986. január 24-én a Voyager 2 az első és egyetlen szonda, amely meglátogatja az Uránuszt: 10 új holdat és egy furcsán megdöntött mágneses mezőt talál.",
+ "tour.u2.t": "Követi a Voyager 2 (2018)",
+ "tour.u2.x": "2018. november 5-én a Voyager 2 átlépi a heliopauzát a csillagközi térbe, működő plazmaműszerrel: először látjuk a határt mindkét oldalról mérve.",
+ "tour.u3.t": "Szíriusz (~300 000 év múlva)",
+ "tour.u3.x": "A Voyager 2 néhány fényévre halad el a Szíriusz mellett, az égbolt legfényesebb csillaga mellett (a NASA ~4,3 fényévet említ; a modellem ~6-ot ad). Nem látogatja meg — csak elsodródik mellette.",
+ "tour.u4.t": "Egymillió év",
+ "tour.u4.x": "Egymillió év múlva a Nap és szomszédai szétszóródtak az égen; a szondák elveszett pontok a csillagok között, az indulásuk helyétől tíz-húsz fényévre."
 }

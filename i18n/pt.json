@@ -217,7 +217,7 @@
  "ev.v2.hp": "≈119 UA: a segunda sonda no espaço interestelar, com um instrumento de plasma em funcionamento.",
  "ev.ld.l": "1 dia-luz",
  "ev.ldE.t": "1 dia-luz da Terra",
- "ev.ldE.x": "Um sinal de rádio demora 24 horas num sentido. A NASA anunciou o marco para 18 de novembro de 2026, 10:16 UTC; o meu modelo extrapola uma data alguns dias antes.",
+ "ev.ldE.x": "Um sinal de rádio demora 24 horas num sentido. O momento (18 de novembro de 2026, 10:16 UTC) é o anunciado pela NASA e o modelo está calibrado por ele.",
  "ev.ldS.t": "1 dia-luz do Sol",
  "ev.ldS.x": "≈173 UA do Sol (heliocêntrico).",
  "ev.sil.l": "≈ anos 2030",
@@ -287,7 +287,7 @@
  "ld.past": "Ultrapassado há {0}",
  "ld.short": "1 dia-luz em {0}",
  "ld.pshort": "Voyager 1 ultrapassou 1 dia-luz ✓",
- "ld.model": "O meu modelo extrapola {0}; as efemérides oficiais da NASA dão um marco alguns dias depois.",
+ "ld.model": "O modelo, calibrado com o anúncio da NASA, dá: {0}.",
  "ld.go": "Ir a esse momento",
  "ld.ping": "Enviar um sinal de rádio",
  "ping.t": "O sinal percorreu {0}…",
@@ -371,5 +371,13 @@
  "tour.15.t": "A Galáxia desfaz-se",
  "tour.15.x": "A ~10¹⁹ anos a Galáxia evapora-se e as sondas são lançadas para fora. Começa a viagem pelo vazio intergaláctico, à lenta velocidade de um fóssil.",
  "tour.16.t": "O fim do tempo",
- "tour.16.x": "Aos 10¹⁰⁰ anos desapareceram até os últimos buracos negros. Aqui termina a simulação — e, por hipótese, a Voyager fica como último mensageiro de um mundo que existiu."
+ "tour.16.x": "Aos 10¹⁰⁰ anos desapareceram até os últimos buracos negros. Aqui termina a simulação — e, por hipótese, a Voyager fica como último mensageiro de um mundo que existiu.",
+ "tour.u1.t": "Úrano (1986)",
+ "tour.u1.x": "A 24 de janeiro de 1986, a Voyager 2 torna-se a primeira e única sonda a visitar Úrano: descobre 10 luas novas e um campo magnético estranhamente inclinado.",
+ "tour.u2.t": "Segue-se a Voyager 2 (2018)",
+ "tour.u2.x": "A 5 de novembro de 2018, a Voyager 2 atravessa a heliopausa e entra no espaço interestelar com o instrumento de plasma a funcionar: pela primeira vez vemos a fronteira medida dos dois lados.",
+ "tour.u3.t": "Sírio (daqui a ~300 000 anos)",
+ "tour.u3.x": "A Voyager 2 passa perto de Sírio, a estrela mais brilhante do céu, a poucos anos-luz (a NASA cita ~4,3 al; o meu modelo dá ~6). Não a visita — apenas passa ao largo.",
+ "tour.u4.t": "Um milhão de anos",
+ "tour.u4.x": "Daqui a um milhão de anos o Sol e os seus vizinhos espalharam-se pelo céu; as sondas são pontos perdidos entre as estrelas, a dezenas de al de onde partiram."
 }

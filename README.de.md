@@ -4,12 +4,12 @@
 
 Interaktive Simulation der Bahnen von Voyager 1 und 2 — vom Start 1977 bis in eine Milliarde Jahre Zukunft, von den Planeten bis zur Milchstraße.
 
-Version: 1.2.0 · Letzte Aktualisierung: 2026-11-14
+Version: 1.2.1 · Letzte Aktualisierung: 2026-11-14
 
 ## Was die App macht
 
 - Die Zeit läuft von den Starts 1977 bis +10¹⁰⁰ Jahre — dem Ende der Zeit, wenn die Sterne verschwunden sind und die Materie zerfällt, Voyager aber (per Annahme) besteht. Die App öffnet mit dem heutigen Datum in Echtzeit, und die Schaltfläche 📅 springt zu jedem Zeitpunkt in Vergangenheit oder Zukunft.
-- Geführte Tour (16 Stationen, vom Start bis zum Ende der Zeit), Live-Countdown bis zum ersten Lichttag von Voyager 1 (NASA: 18. Nov. 2026, 10:16 UTC) mit Funksignal-Animation und Größenvergleichen zur aktuellen Entfernung.
+- Geführte Tour (20 Stationen, vom Start bis zum Ende der Zeit), Live-Countdown bis zum ersten Lichttag von Voyager 1 (NASA: 18. Nov. 2026, 10:16 UTC) mit Funksignal-Animation und Größenvergleichen zur aktuellen Entfernung.
 - Zoom von 1 AE bis zu Zehntausenden Lichtjahren, mit Referenzkreisen für Lichtstunde, Lichttag (≈173 AE) und Lichtjahr.
 - Ballistische Bögen (Lambert-Problem) zwischen den realen Vorbeiflugdaten, danach Extrapolation mit der Sonnengravitation und der lokalen galaktischen Dynamik (epizyklische / Hill-Gleichungen).
 - Heliosphäre, Oortsche Wolke und 19 nahe Sterne mit Eigenbewegung sowie eine Tabelle der größten Annäherungen.
@@ -22,7 +22,7 @@ Version: 1.2.0 · Letzte Aktualisierung: 2026-11-14
 
 ## Genauigkeit und Grenzen
 
-- Die Positionen vom 5. Nov. 2026 (Voyager 1 ≈172,3 AE, Voyager 2 ≈145,1 AE) sind auf die öffentlichen Missionszahlen kalibriert, für den ersten Lichttag (das Modell nennt den 15. Nov. 2026; die NASA gab den 18. Nov. 2026, 10:16 UTC an). Sie sind Eingabedaten des Modells, keine unabhängige Validierung.
+- Die Positionen vom 5. Nov. 2026 (Voyager 1 ≈172,3 AE, Voyager 2 ≈145,1 AE) sind auf die öffentlichen Missionszahlen kalibriert, für den ersten Lichttag (18. Nov. 2026, 10:16 UTC, von der NASA angekündigt; die Bahn von Voyager 1 ist darauf abgestimmt). Sie sind Eingabedaten des Modells, keine unabhängige Validierung.
 - Vorbeiflüge werden als Punkte behandelt (angeschlossene Kegelschnitte); keine Bahnkorrekturen und keine Gravitation anderer Körper.
 - Der Sternkatalog ist näherungsweise. Annäherungsabstände hängen von der genauen Geschwindigkeitsrichtung ab: Voyager 2–Sirius ergibt im Modell ≈6,4 Lj gegenüber ≈4,3 Lj in der Literatur; die App zeigt beide Werte.
 - Das galaktische Modell ist eine Linearisierung um die Sonnenbahn: gut über Zehnermillionen Jahre, ab einigen Hundert Millionen Jahren nur Richtwert.
