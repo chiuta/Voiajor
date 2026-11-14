@@ -4,11 +4,12 @@
 
 Simulação interativa das trajetórias da Voyager 1 e 2 — do lançamento em 1977 até daqui a mil milhões de anos, dos planetas à Via Láctea.
 
-Versão: 1.1.6 · Última atualização: 2026-11-13
+Versão: 1.2.0 · Última atualização: 2026-11-14
 
 ## O que faz
 
-- O tempo vai dos lançamentos de 1977 a +1000 milhões de anos. A aplicação abre na data de hoje, em tempo real, e o botão 📅 salta para qualquer momento do passado ou do futuro.
+- O tempo corre dos lançamentos de 1977 até +10¹⁰⁰ anos — o fim do tempo, quando as estrelas desapareceram e a matéria se desfaz, mas a Voyager resiste (por hipótese). A app abre na data de hoje, em tempo real, e o botão 📅 salta para qualquer momento do passado ou do futuro.
+- Visita guiada (16 paragens, do lançamento ao fim do tempo), contagem decrescente em direto até ao primeiro dia-luz da Voyager 1 (NASA: 18 nov. 2026, 10:16 UTC) com animação do sinal de rádio e analogias de escala para a distância atual.
 - Zoom de 1 UA a dezenas de milhares de anos-luz, com círculos de referência para a hora-luz, o dia-luz (≈173 UA) e o ano-luz.
 - Arcos balísticos (problema de Lambert) entre as datas reais dos sobrevoos e depois extrapolação com a gravidade do Sol e a dinâmica galáctica local (equações epicíclicas / de Hill).
 - Heliosfera, nuvem de Oort e 19 estrelas próximas com movimento próprio, mais uma tabela das aproximações mais próximas.
@@ -21,10 +22,11 @@ Abra `index.html` num navegador moderno — sem instalação nem rede. Online: h
 
 ## Precisão e limites
 
-- As posições de 5 nov. 2026 (Voyager 1 ≈172,3 UA, Voyager 2 ≈145,1 UA) estão calibradas com os números públicos da missão, incluindo o marco do dia-luz de 15 nov. 2026. São dados de entrada do modelo, não uma validação independente.
+- As posições de 5 nov. 2026 (Voyager 1 ≈172,3 UA, Voyager 2 ≈145,1 UA) estão calibradas com os números públicos da missão, para o primeiro dia-luz (o modelo dá 15 nov. 2026; a NASA anunciou 18 nov. 2026, 10:16 UTC). São dados de entrada do modelo, não uma validação independente.
 - Os sobrevoos são tratados como pontos (cónicas ligadas); sem correções de trajetória nem gravidade de outros corpos.
 - O catálogo de estrelas é aproximado. As distâncias de aproximação dependem da direção exata da velocidade: Voyager 2–Sírio dá ≈6,4 a.l. no modelo contra ≈4,3 a.l. na literatura; a aplicação mostra ambos.
 - O modelo galáctico é uma linearização em torno da órbita do Sol: bom ao longo de dezenas de milhões de anos, indicativo para além de algumas centenas de milhões.
+- Além de alguns milhares de milhões de anos, as trajetórias são ilustrativas: as sondas são supostas indestrutíveis, a Galáxia evapora-se a ≈10¹⁹ anos e a expansão cósmica pára-as a alguns milhões de al.
 - As datas do fim da transmissão são estimativas, não previsões oficiais.
 
 ## Testes

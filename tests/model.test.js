@@ -74,5 +74,18 @@ check('V1 – Gliese 445: ≈1,6 a.l. în ~40 000 de ani (toleranță 0,5 a.l. /
 const a3 = M.closest(V2, star('Sirius'), 1.2e6);
 check('V2 – Sirius: în apropiere de 296 000 de ani (distanța diferă de 4,3 a.l., vezi README)', near(a3.t - M.TAU0, 296000, 40000) && a3.d / LY < 8, (a3.d / LY).toFixed(2) + ' a.l. @+' + Math.round(a3.t - M.TAU0));
 
+// ---- timp profund ----
+for (const V of M.VOY) {
+  let fin = true, mx = 0, prev = M.voyPos(V, M.TAU0 + 1e6);
+  for (const e of [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 19.5, 20, 30, 60, 100]) {
+    const p = M.voyPos(V, M.TAU0 + Math.pow(10, e)); fin = fin && p.every(Number.isFinite); mx = Math.max(mx, norm(p));
+  }
+  check(V.name + ': poziții finite de la 10^6 la 10^100 ani', fin);
+  const fa = M.voyPos(V, M.TAU0 + 1e100), fb = M.voyPos(V, M.TAU0 + 1e60);
+  check(V.name + ': stabilă în golul final (expansiunea o oprește la 5–15 Mal)', norm(fa) / LY > 5e6 && norm(fa) / LY < 1.5e7 && norm([fa[0]-fb[0], fa[1]-fb[1], fa[2]-fb[2]]) / LY < 1, (norm(fa) / LY / 1e6).toFixed(2) + ' Mal');
+  const g = norm(M.voyPos(V, M.TAU0 + 1e12)) / LY;
+  check(V.name + ': la 10^12 ani încă pe orbită galactică (<60 000 a.l.)', g < 6e4, Math.round(g) + ' a.l.');
+}
+
 console.log('\n' + ok + ' reușite, ' + fail + ' eșuate');
 process.exit(fail ? 1 : 0);

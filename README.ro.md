@@ -4,11 +4,12 @@
 
 Simulare interactivă a traseelor Voyager 1 și 2 — de la lansarea din 1977 până peste un miliard de ani, de la planete până în Calea Lactee.
 
-Versiune: 1.1.6 · Ultima actualizare: 2026-11-13
+Versiune: 1.2.0 · Ultima actualizare: 2026-11-14
 
 ## Ce face
 
-- Timpul curge de la lansările din 1977 până la +1 miliard de ani. Aplicația se deschide la data de azi, în timp real, iar butonul 📅 sare la orice moment din trecut sau viitor.
+- Timpul curge de la lansările din 1977 până la +10¹⁰⁰ ani — sfârșitul timpului, când stelele au dispărut și materia se destramă, dar Voyager rezistă (prin ipoteză). Aplicația se deschide la data de azi, în timp real, iar butonul 📅 sare la orice moment din trecut sau viitor.
+- Tur ghidat (16 popasuri, de la lansare până la sfârșitul timpului), numărătoare inversă live până la prima zi-lumină a lui Voyager 1 (NASA: 18 nov. 2026, 10:16 UTC) cu animație a semnalului radio și analogii de scară pentru distanța curentă.
 - Zoom de la 1 UA la zeci de mii de ani-lumină, cu cercuri de referință pentru ora-lumină, ziua-lumină (≈173 UA) și anul-lumină.
 - Arce balistice (problema Lambert) între datele reale ale zborurilor, apoi extrapolare cu gravitația Soarelui și dinamica galactică locală (ecuațiile epiciclice / Hill).
 - Heliosferă, Norul Oort și 19 stele apropiate cu mișcare proprie, plus un tabel al celor mai mici apropieri.
@@ -21,10 +22,11 @@ Deschide `index.html` în orice browser modern — fără instalare, fără reț
 
 ## Precizie și limite
 
-- Pozițiile din 5 nov. 2026 (Voyager 1 ≈172,3 UA, Voyager 2 ≈145,1 UA) sunt calibrate după cifrele publice ale misiunii, inclusiv reperul zilei-lumină din 15 nov. 2026. Sunt date de intrare ale modelului, nu o validare independentă.
+- Pozițiile din 5 nov. 2026 (Voyager 1 ≈172,3 UA, Voyager 2 ≈145,1 UA) sunt calibrate după cifrele publice ale misiunii, pentru prima zi-lumină (modelul dă 15 nov. 2026; NASA a anunțat 18 nov. 2026, 10:16 UTC). Sunt date de intrare ale modelului, nu o validare independentă.
 - Zborurile pe lângă planete sunt tratate ca puncte (conice îmbinate); fără corecții de traiectorie și fără gravitația altor corpuri.
 - Catalogul de stele este aproximativ. Distanțele de apropiere depind de direcția exactă a vitezei: Voyager 2–Sirius dă ≈6,4 a.l. în model față de ≈4,3 a.l. în literatură; aplicația le arată pe amândouă.
 - Modelul galactic este o liniarizare în jurul orbitei Soarelui: bun pe zeci de milioane de ani, orientativ după câteva sute de milioane.
+- Dincolo de câteva miliarde de ani, traseele sunt ilustrative: sondele sunt presupuse indestructibile, Galaxia se evaporă la ≈10¹⁹ ani, iar expansiunea cosmică le oprește la câteva milioane de a.l.
 - Datările despre sfârșitul transmisiei sunt estimări, nu previziuni oficiale.
 
 ## Teste

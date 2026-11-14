@@ -51,7 +51,7 @@ const VPS = [['phone', 390, 844], ['phoneL', 844, 390], ['tablet', 820, 1180], [
         await pg.click('#bOpt');
         await pg.click('#bGo'); await pg.waitForTimeout(150);
         const g = await pg.evaluate(() => { const b = document.querySelector('#goto .gbox').getBoundingClientRect(); return { inside: b.left >= -1 && b.right <= innerWidth + 1, months: document.querySelectorAll('#gM option').length, chips: document.querySelectorAll('#gChips button').length }; });
-        if (!g.inside || g.months !== 12 || g.chips !== 12) fail(tag + ' dialog ' + JSON.stringify(g));
+        if (!g.inside || g.months !== 12 || g.chips !== 15) fail(tag + ' dialog ' + JSON.stringify(g));
         if (shots && vn === 'phone') await pg.screenshot({ path: path.join(shots, tag.replace('/', '-') + '-goto.png') });
         await pg.click('#gX');
       }

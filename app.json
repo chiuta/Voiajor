@@ -2,8 +2,8 @@
   "schema": 1,
   "slug": "voiajor",
   "name": "VOIAJOR — Voyager 1 și 2, de la lansare în viitorul îndepărtat",
-  "version": "1.1.6",
-  "updated": "2026-11-13",
+  "version": "1.2.0",
+  "updated": "2026-11-14",
   "description": "Simulare detaliată a traseului sondelor Voyager 1 și 2, din 1977 până peste un miliard de ani, la orice scară.",
   "egress": [],
   "permissions": [
