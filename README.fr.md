@@ -4,7 +4,7 @@
 
 Simulation interactive des trajectoires de Voyager 1 et 2 — du lancement en 1977 jusqu'à un milliard d'années dans le futur, des planètes à la Voie lactée.
 
-Version: 1.2.1 · Dernière mise à jour: 2026-11-14
+Version: 1.2.2 · Dernière mise à jour: 2026-11-15
 
 ## Ce que fait l'application
 

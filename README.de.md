@@ -4,7 +4,7 @@
 
 Interaktive Simulation der Bahnen von Voyager 1 und 2 — vom Start 1977 bis in eine Milliarde Jahre Zukunft, von den Planeten bis zur Milchstraße.
 
-Version: 1.2.1 · Letzte Aktualisierung: 2026-11-14
+Version: 1.2.2 · Letzte Aktualisierung: 2026-11-15
 
 ## Was die App macht
 
